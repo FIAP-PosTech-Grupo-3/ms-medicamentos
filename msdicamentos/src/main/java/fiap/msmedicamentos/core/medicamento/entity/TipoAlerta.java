@@ -1,0 +1,12 @@
+package fiap.msmedicamentos.core.medicamento.entity;
+
+public enum TipoAlerta {
+    ESTOQUE_BAIXO,
+    MEDICAMENTO_VENCENDO,
+    MEDICAMENTO_VENCIDO,
+    PRESCRICAO_EXPIRANDO,
+    MOVIMENTACAO_SUSPEITA,
+    FALTA_MEDICAMENTO_CRITICO,
+    SOBRA_ESTOQUE,
+    DEVOLUCAO_ATRASADA
+}
