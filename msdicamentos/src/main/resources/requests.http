@@ -1,0 +1,64 @@
+### Medicamentos API - Endpoints para testes
+
+### Cadastrar Medicamento
+POST http://localhost:8080/api/medicamentos
+Content-Type: application/json
+
+{
+  "nome": "Paracetamol",
+  "tipo": "ANALGESICO",
+  "fabricante": "EMS",
+  "dataValidade": "2025-12-31",
+  "dosagem": "500mg",
+  "formaFarmaceutica": "COMPRIMIDO",
+  "principioAtivo": "Paracetamol",
+  "lote": "LOT123456",
+  "dataFabricacao": "2024-01-15",
+  "quantidadeEstoque": 100,
+  "precisaReceita": false,
+  "emFalta": false
+}
+
+###
+
+### Cadastrar Medicamento com Receita
+POST http://localhost:8080/api/medicamentos
+Content-Type: application/json
+
+{
+  "nome": "Amoxicilina",
+  "tipo": "ANTIBIOTICO",
+  "fabricante": "Medley",
+  "dataValidade": "2026-06-30",
+  "dosagem": "875mg",
+  "formaFarmaceutica": "COMPRIMIDO",
+  "principioAtivo": "Amoxicilina",
+  "lote": "AMX789",
+  "dataFabricacao": "2024-03-10",
+  "quantidadeEstoque": 50,
+  "precisaReceita": true,
+  "emFalta": false
+}
+
+###
+
+### Cadastrar Medicamento em Falta
+POST http://localhost:8080/api/medicamentos
+Content-Type: application/json
+
+{
+  "nome": "Dipirona",
+  "tipo": "ANALGESICO",
+  "fabricante": "Neo Química",
+  "dataValidade": "2025-08-15",
+  "dosagem": "500mg",
+  "formaFarmaceutica": "GOTAS",
+  "principioAtivo": "Dipirona Sódica",
+  "lote": "DIP456",
+  "dataFabricacao": "2024-02-20",
+  "quantidadeEstoque": 0,
+  "precisaReceita": false,
+  "emFalta": true
+}
+
+###

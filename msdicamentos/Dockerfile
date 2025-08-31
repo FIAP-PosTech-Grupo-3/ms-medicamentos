@@ -1,17 +1,17 @@
-# Dockerfile para ms-medicamentos
-FROM eclipse-temurin:21-jdk-alpine
+# Dockerfile simples para ms-medicamentos
+FROM eclipse-temurin:21-jre-alpine
 
-# Diretório de trabalho
 WORKDIR /app
 
-# Copia o arquivo JAR gerado pelo Maven
+# Copia o JAR já buildado
 COPY target/ms-medicamentos-0.0.1-SNAPSHOT.jar app.jar
 
-# Copia o arquivo de propriedades, se necessário
-COPY src/main/resources/application.properties ./
+# Cria usuário não-root
+RUN addgroup -g 1001 -S appgroup && \
+    adduser -u 1001 -S appuser -G appgroup
 
-# Porta exposta
+USER appuser
+
 EXPOSE 8080
 
-# Comando para rodar a aplicação
-ENTRYPOINT ["java","-jar","app.jar"]
+ENTRYPOINT ["java", "-jar", "app.jar"]
