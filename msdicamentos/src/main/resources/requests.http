@@ -1,6 +1,6 @@
 ### Medicamentos API - Endpoints para testes
 
-### Cadastrar Medicamento
+### Cadastrar Medicamento - Sucesso
 POST http://localhost:8080/api/medicamentos
 Content-Type: application/json
 
@@ -17,6 +17,29 @@ Content-Type: application/json
   "quantidadeEstoque": 100,
   "precisaReceita": false,
   "emFalta": false
+}
+
+###
+
+### Cadastrar Medicamento - Erro: Nome vazio (400 Bad Request)
+POST http://localhost:8080/api/medicamentos
+Content-Type: application/json
+
+{
+  "nome": "",
+  "tipo": "ANALGESICO",
+  "fabricante": "EMS"
+}
+
+###
+
+### Cadastrar Medicamento - Erro: Tipo null (400 Bad Request)
+POST http://localhost:8080/api/medicamentos
+Content-Type: application/json
+
+{
+  "nome": "Dipirona",
+  "fabricante": "Neo Química"
 }
 
 ###
@@ -38,27 +61,6 @@ Content-Type: application/json
   "quantidadeEstoque": 50,
   "precisaReceita": true,
   "emFalta": false
-}
-
-###
-
-### Cadastrar Medicamento em Falta
-POST http://localhost:8080/api/medicamentos
-Content-Type: application/json
-
-{
-  "nome": "Dipirona",
-  "tipo": "ANALGESICO",
-  "fabricante": "Neo Química",
-  "dataValidade": "2025-08-15",
-  "dosagem": "500mg",
-  "formaFarmaceutica": "GOTAS",
-  "principioAtivo": "Dipirona Sódica",
-  "lote": "DIP456",
-  "dataFabricacao": "2024-02-20",
-  "quantidadeEstoque": 0,
-  "precisaReceita": false,
-  "emFalta": true
 }
 
 ###

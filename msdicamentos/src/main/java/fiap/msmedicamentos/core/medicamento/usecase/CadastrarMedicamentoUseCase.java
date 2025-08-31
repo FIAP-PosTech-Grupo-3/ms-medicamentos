@@ -1,6 +1,7 @@
 package fiap.msmedicamentos.core.medicamento.usecase;
 
 import fiap.msmedicamentos.core.medicamento.entity.Medicamento;
+import fiap.msmedicamentos.core.medicamento.exception.MedicamentoInvalidoException;
 import fiap.msmedicamentos.core.medicamento.gateway.MedicamentoGateway;
 import org.springframework.stereotype.Service;
 
@@ -20,10 +21,10 @@ public class CadastrarMedicamentoUseCase {
 
     private void validar(Medicamento medicamento) {
         if (medicamento.getNome() == null || medicamento.getNome().trim().isEmpty()) {
-            throw new IllegalArgumentException("Nome do medicamento é obrigatório");
+            throw new MedicamentoInvalidoException("nome");
         }
         if (medicamento.getTipo() == null) {
-            throw new IllegalArgumentException("Tipo do medicamento é obrigatório");
+            throw new MedicamentoInvalidoException("tipo");
         }
     }
 }
