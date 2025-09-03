@@ -56,7 +56,7 @@ GET /api/medicamentos/buscar?nome=paracetamol&page=0&size=10
 
 ## Estrutura do Banco de Dados
 
-O sistema utiliza um modelo relacional com 3 tabelas principais:
+O sistema utiliza um modelo relacional com 3 tabelas principais criadas em uma única migração:
 
 ### medicamentos
 Dados básicos dos medicamentos (sem informações de estoque)
@@ -68,6 +68,8 @@ Cadastro de UBS, hospitais e clínicas
 Tabela associativa N:N que relaciona medicamentos com unidades de saúde, incluindo as quantidades em estoque por localização.
 
 **Exemplo**: Um mesmo medicamento pode ter quantidades diferentes em cada UBS.
+
+**Dados de exemplo** são inseridos automaticamente na primeira execução.
 
 ## Testes
 
