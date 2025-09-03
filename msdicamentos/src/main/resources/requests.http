@@ -13,9 +13,7 @@ Content-Type: application/json
   "principioAtivo": "Paracetamol",
   "lote": "LOT123456",
   "dataFabricacao": "2024-01-15",
-  "quantidadeEstoque": 100,
-  "precisaReceita": false,
-  "emFalta": false
+  "precisaReceita": false
 }
 
 ###
@@ -57,9 +55,7 @@ Content-Type: application/json
   "principioAtivo": "Amoxicilina",
   "lote": "AMX789",
   "dataFabricacao": "2024-03-10",
-  "quantidadeEstoque": 50,
-  "precisaReceita": true,
-  "emFalta": false
+  "precisaReceita": true
 }
 
 ###
@@ -124,9 +120,7 @@ Content-Type: application/json
   "principioAtivo": "Paracetamol",
   "lote": "LOT123456-NEW",
   "dataFabricacao": "2024-01-15",
-  "quantidadeEstoque": 150,
-  "precisaReceita": false,
-  "emFalta": false
+  "precisaReceita": false
 }
 
 ###
@@ -145,9 +139,7 @@ Content-Type: application/json
   "principioAtivo": "Princípio Ativo",
   "lote": "LOT999",
   "dataFabricacao": "2024-01-15",
-  "quantidadeEstoque": 100,
-  "precisaReceita": false,
-  "emFalta": false
+  "precisaReceita": false
 }
 
 ###

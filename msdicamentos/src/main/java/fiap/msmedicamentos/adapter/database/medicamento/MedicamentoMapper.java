@@ -20,9 +20,7 @@ public class MedicamentoMapper {
         entity.setPrincipioAtivo(domain.getPrincipioAtivo());
         entity.setLote(domain.getLote());
         entity.setDataFabricacao(domain.getDataFabricacao());
-        entity.setQuantidadeEstoque(domain.getQuantidadeEstoque());
         entity.setPrecisaReceita(domain.isPrecisaReceita());
-        entity.setEmFalta(domain.isEmFalta());
         
         return entity;
     }
@@ -41,9 +39,7 @@ public class MedicamentoMapper {
             entity.getPrincipioAtivo(),
             entity.getLote(),
             entity.getDataFabricacao(),
-            entity.getQuantidadeEstoque(),
-            entity.getPrecisaReceita() != null ? entity.getPrecisaReceita() : false,
-            entity.getEmFalta() != null ? entity.getEmFalta() : false
+            entity.getPrecisaReceita() != null ? entity.getPrecisaReceita() : false
         );
     }
 }

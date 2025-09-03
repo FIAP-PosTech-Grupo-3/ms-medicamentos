@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +23,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/medicamentos")
 @Tag(name = "Medicamentos", description = "API para gerenciamento de medicamentos")
@@ -62,9 +64,14 @@ public class MedicamentoController {
     public ResponseEntity<MedicamentoResponse> cadastrar(
             @Parameter(description = "Dados do medicamento a ser cadastrado") 
             @RequestBody CadastrarMedicamentoRequest request) {
+        log.info("Cadastrando medicamento: {}", request.getNome());
+        
         Medicamento medicamento = mapper.toDomain(request);
         Medicamento medicamentoSalvo = cadastrarMedicamentoUseCase.execute(medicamento);
         MedicamentoResponse response = mapper.toResponse(medicamentoSalvo);
+        
+        log.info("Medicamento cadastrado - ID: {}", medicamentoSalvo.getId());
+        
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
@@ -78,8 +85,11 @@ public class MedicamentoController {
     public ResponseEntity<MedicamentoResponse> buscarPorId(
             @Parameter(description = "ID do medicamento") 
             @PathVariable Long id) {
+        log.info("Buscando medicamento ID: {}", id);
+        
         Medicamento medicamento = buscarMedicamentoPorIdUseCase.execute(id);
         MedicamentoResponse response = mapper.toResponse(medicamento);
+        
         return ResponseEntity.ok(response);
     }
 

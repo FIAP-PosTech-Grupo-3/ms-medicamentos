@@ -39,9 +39,7 @@ public class AtualizarMedicamentoUseCase {
             medicamento.getPrincipioAtivo(),
             medicamento.getLote(),
             medicamento.getDataFabricacao(),
-            medicamento.getQuantidadeEstoque(),
-            medicamento.isPrecisaReceita(),
-            medicamento.isEmFalta()
+            medicamento.isPrecisaReceita()
         );
         
         return gateway.atualizar(medicamento);

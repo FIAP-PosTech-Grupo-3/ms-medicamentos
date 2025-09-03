@@ -41,12 +41,6 @@ public class MedicamentoResponse {
     @Schema(description = "Data de fabricação", example = "2024-01-15")
     private LocalDate dataFabricacao;
     
-    @Schema(description = "Quantidade em estoque", example = "100")
-    private Integer quantidadeEstoque;
-    
     @Schema(description = "Indica se precisa de receita médica", example = "false")
     private Boolean precisaReceita;
-    
-    @Schema(description = "Indica se o medicamento está em falta", example = "false")
-    private Boolean emFalta;
 }

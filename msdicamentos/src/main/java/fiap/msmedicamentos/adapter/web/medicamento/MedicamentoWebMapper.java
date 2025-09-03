@@ -23,9 +23,7 @@ public class MedicamentoWebMapper {
             request.getPrincipioAtivo(),
             request.getLote(),
             request.getDataFabricacao(),
-            request.getQuantidadeEstoque(),
-            request.getPrecisaReceita() != null ? request.getPrecisaReceita() : false,
-            request.getEmFalta() != null ? request.getEmFalta() : false
+            request.getPrecisaReceita() != null ? request.getPrecisaReceita() : false
         );
     }
     
@@ -43,9 +41,7 @@ public class MedicamentoWebMapper {
         response.setPrincipioAtivo(medicamento.getPrincipioAtivo());
         response.setLote(medicamento.getLote());
         response.setDataFabricacao(medicamento.getDataFabricacao());
-        response.setQuantidadeEstoque(medicamento.getQuantidadeEstoque());
         response.setPrecisaReceita(medicamento.isPrecisaReceita());
-        response.setEmFalta(medicamento.isEmFalta());
         
         return response;
     }
