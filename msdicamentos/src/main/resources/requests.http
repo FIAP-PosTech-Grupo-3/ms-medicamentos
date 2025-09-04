@@ -1,4 +1,3 @@
-### Medicamentos API - Endpoints para testes
 
 ### Cadastrar Medicamento - Sucesso
 POST http://localhost:8080/api/medicamentos
@@ -14,9 +13,7 @@ Content-Type: application/json
   "principioAtivo": "Paracetamol",
   "lote": "LOT123456",
   "dataFabricacao": "2024-01-15",
-  "quantidadeEstoque": 100,
-  "precisaReceita": false,
-  "emFalta": false
+  "precisaReceita": false
 }
 
 ###
@@ -58,9 +55,113 @@ Content-Type: application/json
   "principioAtivo": "Amoxicilina",
   "lote": "AMX789",
   "dataFabricacao": "2024-03-10",
-  "quantidadeEstoque": 50,
-  "precisaReceita": true,
-  "emFalta": false
+  "precisaReceita": true
 }
 
 ###
+
+### Buscar Medicamento por ID
+
+GET http://localhost:8080/api/medicamentos/1
+
+###
+
+### Buscar Medicamento por ID - Não encontrado (404)
+GET http://localhost:8080/api/medicamentos/999
+
+###
+
+### Buscar Todos os Medicamentos - Primeira página
+GET http://localhost:8080/api/medicamentos
+
+###
+
+### Buscar Todos os Medicamentos - Com paginação personalizada
+GET http://localhost:8080/api/medicamentos?page=0&size=5&sortBy=nome&sortDirection=ASC
+
+###
+
+### Buscar Todos os Medicamentos - Ordenado por data de validade
+GET http://localhost:8080/api/medicamentos?page=0&size=10&sortBy=dataValidade&sortDirection=DESC
+
+###
+
+### Buscar Medicamentos por Nome - "Paracetamol"
+GET http://localhost:8080/api/medicamentos/buscar?nome=Paracetamol
+
+###
+
+### Buscar Medicamentos por Nome - Busca parcial "para"
+GET http://localhost:8080/api/medicamentos/buscar?nome=para&page=0&size=10
+
+###
+
+### Buscar Medicamentos por Nome - Com paginação
+GET http://localhost:8080/api/medicamentos/buscar?nome=a&page=0&size=5&sortBy=nome&sortDirection=ASC
+
+###
+
+### Buscar Medicamentos por Nome - Nome vazio (400 Bad Request)
+GET http://localhost:8080/api/medicamentos/buscar?nome=
+
+###
+
+### Atualizar Medicamento - Sucesso
+PUT http://localhost:8080/api/medicamentos/1
+Content-Type: application/json
+
+{
+  "nome": "Paracetamol 750mg",
+  "tipo": "ANALGESICO",
+  "fabricante": "EMS Pharma",
+  "dataValidade": "2025-12-31",
+  "dosagem": "750mg",
+  "formaFarmaceutica": "COMPRIMIDO",
+  "principioAtivo": "Paracetamol",
+  "lote": "LOT123456-NEW",
+  "dataFabricacao": "2024-01-15",
+  "precisaReceita": false
+}
+
+###
+
+### Atualizar Medicamento - ID não encontrado (404)
+PUT http://localhost:8080/api/medicamentos/999
+Content-Type: application/json
+
+{
+  "nome": "Medicamento Inexistente",
+  "tipo": "ANALGESICO",
+  "fabricante": "Fabricante",
+  "dataValidade": "2025-12-31",
+  "dosagem": "500mg",
+  "formaFarmaceutica": "COMPRIMIDO",
+  "principioAtivo": "Princípio Ativo",
+  "lote": "LOT999",
+  "dataFabricacao": "2024-01-15",
+  "precisaReceita": false
+}
+
+###
+
+### Atualizar Medicamento - Dados inválidos (400)
+PUT http://localhost:8080/api/medicamentos/1
+Content-Type: application/json
+
+{
+  "nome": "",
+  "tipo": "ANALGESICO",
+  "fabricante": "EMS"
+}
+
+###
+
+### Deletar Medicamento - Sucesso (204)
+DELETE http://localhost:8080/api/medicamentos/1
+
+
+
+###
+
+### Deletar Medicamento - ID não encontrado (404)
+DELETE http://localhost:8080/api/medicamentos/999

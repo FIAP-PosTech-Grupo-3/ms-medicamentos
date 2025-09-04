@@ -47,14 +47,8 @@ public class MedicamentoEntity {
     @Column(name = "data_fabricacao")
     private LocalDate dataFabricacao;
     
-    @Column(name = "quantidade_estoque")
-    private Integer quantidadeEstoque;
-    
     @Column(name = "precisa_receita")
     private Boolean precisaReceita;
-    
-    @Column(name = "em_falta")
-    private Boolean emFalta;
     
     @Column(name = "created_at")
     private LocalDateTime createdAt;

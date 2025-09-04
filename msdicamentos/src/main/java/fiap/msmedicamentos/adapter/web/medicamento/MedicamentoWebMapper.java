@@ -1,7 +1,10 @@
 package fiap.msmedicamentos.adapter.web.medicamento;
 
 import fiap.msmedicamentos.core.medicamento.entity.Medicamento;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
+
+import java.util.stream.Collectors;
 
 @Component
 public class MedicamentoWebMapper {
@@ -20,9 +23,7 @@ public class MedicamentoWebMapper {
             request.getPrincipioAtivo(),
             request.getLote(),
             request.getDataFabricacao(),
-            request.getQuantidadeEstoque(),
-            request.getPrecisaReceita() != null ? request.getPrecisaReceita() : false,
-            request.getEmFalta() != null ? request.getEmFalta() : false
+            request.getPrecisaReceita() != null ? request.getPrecisaReceita() : false
         );
     }
     
@@ -40,9 +41,25 @@ public class MedicamentoWebMapper {
         response.setPrincipioAtivo(medicamento.getPrincipioAtivo());
         response.setLote(medicamento.getLote());
         response.setDataFabricacao(medicamento.getDataFabricacao());
-        response.setQuantidadeEstoque(medicamento.getQuantidadeEstoque());
         response.setPrecisaReceita(medicamento.isPrecisaReceita());
-        response.setEmFalta(medicamento.isEmFalta());
+        
+        return response;
+    }
+    
+    public PagedMedicamentoResponse toPagedResponse(Page<Medicamento> page) {
+        if (page == null) return null;
+        
+        PagedMedicamentoResponse response = new PagedMedicamentoResponse();
+        response.setContent(page.getContent().stream()
+                .map(this::toResponse)
+                .collect(Collectors.toList()));
+        response.setPageNumber(page.getNumber());
+        response.setPageSize(page.getSize());
+        response.setTotalElements(page.getTotalElements());
+        response.setTotalPages(page.getTotalPages());
+        response.setFirst(page.isFirst());
+        response.setLast(page.isLast());
+        response.setEmpty(page.isEmpty());
         
         return response;
     }

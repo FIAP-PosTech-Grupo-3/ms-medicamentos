@@ -22,15 +22,11 @@ public class Medicamento {
     private String principioAtivo;
     private String lote;
     private LocalDate dataFabricacao;
-    private Integer quantidadeEstoque;
     private boolean precisaReceita;
-    private boolean emFalta;
 
     public boolean isValido() {
-        return dataValidade != null && dataValidade.isAfter(LocalDate.now());
-    }
-
-    public boolean precisaReposicao() {
-        return quantidadeEstoque != null && quantidadeEstoque < 10;
+        return nome != null && !nome.trim().isEmpty() && 
+               tipo != null && 
+               dataValidade != null && dataValidade.isAfter(LocalDate.now());
     }
 }
