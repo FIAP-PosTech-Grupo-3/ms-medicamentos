@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -63,7 +64,7 @@ public class MedicamentoController {
     })
     public ResponseEntity<MedicamentoResponse> cadastrar(
             @Parameter(description = "Dados do medicamento a ser cadastrado") 
-            @RequestBody CadastrarMedicamentoRequest request) {
+            @Valid @RequestBody CadastrarMedicamentoRequest request) {
         log.info("Cadastrando medicamento: {}", request.getNome());
         
         Medicamento medicamento = mapper.toDomain(request);
@@ -146,7 +147,7 @@ public class MedicamentoController {
     })
     public ResponseEntity<MedicamentoResponse> atualizar(
             @Parameter(description = "ID do medicamento") @PathVariable Long id, 
-            @Parameter(description = "Dados atualizados do medicamento") @RequestBody CadastrarMedicamentoRequest request) {
+            @Parameter(description = "Dados atualizados do medicamento") @Valid @RequestBody CadastrarMedicamentoRequest request) {
         Medicamento medicamento = mapper.toDomain(request);
         Medicamento medicamentoAtualizado = atualizarMedicamentoUseCase.executar(id, medicamento);
         MedicamentoResponse response = mapper.toResponse(medicamentoAtualizado);

@@ -62,7 +62,7 @@ O sistema utiliza um modelo relacional com 3 tabelas principais criadas em uma �
 Dados básicos dos medicamentos (sem informações de estoque)
 
 ### unidades_saude  
-Cadastro de UBS, hospitais e clínicas
+Cadastro de unidades de saúde (UBS, hospitais, clínicas, etc.)
 
 ### medicamento_unidade_saude
 Tabela associativa N:N que relaciona medicamentos com unidades de saúde, incluindo as quantidades em estoque por localização.
