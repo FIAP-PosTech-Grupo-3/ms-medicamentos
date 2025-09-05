@@ -28,9 +28,6 @@ public class UnidadeSaudeEntity {
     
     private String email;
     
-    @Column(nullable = false)
-    private String tipo;
-    
     private Boolean ativa;
     
     @Column(name = "created_at")

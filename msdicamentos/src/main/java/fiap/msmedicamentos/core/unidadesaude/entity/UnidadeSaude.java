@@ -13,11 +13,14 @@ public class UnidadeSaude {
     private String endereco;
     private String telefone;
     private String email;
-    private String tipo; // UBS, Hospital, Clínica, etc.
     private boolean ativa;
 
     public boolean isValida() {
         return nome != null && !nome.trim().isEmpty() && 
                endereco != null && !endereco.trim().isEmpty();
+    }
+
+    public boolean isAtiva() {
+        return ativa;
     }
 }

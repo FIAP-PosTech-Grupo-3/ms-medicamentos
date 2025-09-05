@@ -7,7 +7,14 @@ Content-Type: application/json
   "nome": "Paracetamol",
   "tipo": "ANALGESICO",
   "fabricante": "EMS",
-  "dataValidade": "2025-12-31",
+  "dataValidade"### Cadastrar Unidade de Saúde - Erro: Nome vazio (400 Bad Request)
+POST http://localhost:8080/api/unidades-saude
+Content-Type: application/json
+
+{
+  "nome": "",
+  "endereco": "Rua das Flores, 123"
+}2-31",
   "dosagem": "500mg",
   "formaFarmaceutica": "COMPRIMIDO",
   "principioAtivo": "Paracetamol",
@@ -165,3 +172,101 @@ DELETE http://localhost:8080/api/medicamentos/1
 
 ### Deletar Medicamento - ID não encontrado (404)
 DELETE http://localhost:8080/api/medicamentos/999
+
+###
+
+####################
+# UNIDADES DE SAÚDE
+####################
+
+### Cadastrar Unidade de Saúde - Sucesso
+POST http://localhost:8080/api/unidades-saude
+Content-Type: application/json
+
+{
+  "nome": "UBS Vila Esperança",
+  "endereco": "Rua das Flores, 123 - Vila Esperança - São Paulo/SP",
+  "telefone": "(11) 3456-7890",
+  "email": "ubs.vilaesperanca@saude.sp.gov.br",
+  "ativa": true
+}
+
+###
+
+### Cadastrar Hospital - Sucesso
+POST http://localhost:8080/api/unidades-saude
+Content-Type: application/json
+
+{
+  "nome": "Hospital das Clínicas",
+  "endereco": "Av. Dr. Enéas de Carvalho Aguiar, 255 - Cerqueira César - São Paulo/SP",
+  "telefone": "(11) 2661-0000",
+  "email": "contato@hc.fm.usp.br",
+  "ativa": true
+}
+
+###
+
+### Cadastrar Unidade de Saúde - Erro: Nome muito curto (400 Bad Request)
+POST http://localhost:8080/api/unidades-saude
+Content-Type: application/json
+
+{
+  "nome": "UB",
+  "endereco": "Rua das Flores, 123"
+}
+
+###
+
+### Buscar Unidade de Saúde por ID - Sucesso
+GET http://localhost:8080/api/unidades-saude/1
+
+###
+
+### Buscar Unidade de Saúde por ID - Não encontrada (404)
+GET http://localhost:8080/api/unidades-saude/999
+
+###
+
+### Listar todas as Unidades de Saúde - Primeira página
+GET http://localhost:8080/api/unidades-saude?page=0&size=10&sort=nome&direction=asc
+
+###
+
+### Buscar Unidades de Saúde por nome
+GET http://localhost:8080/api/unidades-saude/buscar?nome=Vila&page=0&size=10
+
+###
+
+### Atualizar Unidade de Saúde - Sucesso
+PUT http://localhost:8080/api/unidades-saude/1
+Content-Type: application/json
+
+{
+  "nome": "UBS Vila Esperança - Atualizada",
+  "endereco": "Rua das Flores, 123 - Vila Esperança - São Paulo/SP - CEP: 12345-000",
+  "telefone": "(11) 3456-7890",
+  "email": "ubs.vilaesperanca.nova@saude.sp.gov.br",
+  "ativa": true
+}
+
+###
+
+### Atualizar Unidade de Saúde - ID não encontrado (404)
+PUT http://localhost:8080/api/unidades-saude/999
+Content-Type: application/json
+
+{
+  "nome": "UBS Inexistente",
+  "endereco": "Rua Inexistente, 999"
+}
+
+###
+
+### Deletar Unidade de Saúde - Sucesso (204)
+DELETE http://localhost:8080/api/unidades-saude/1
+
+###
+
+### Deletar Unidade de Saúde - ID não encontrado (404)
+DELETE http://localhost:8080/api/unidades-saude/999

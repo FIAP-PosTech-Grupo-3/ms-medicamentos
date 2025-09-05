@@ -3,6 +3,9 @@ package fiap.msmedicamentos.adapter.web.medicamento;
 import fiap.msmedicamentos.core.medicamento.enums.FormaFarmaceutica;
 import fiap.msmedicamentos.core.medicamento.enums.TipoMedicamento;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -11,15 +14,19 @@ import java.time.LocalDate;
 @Schema(description = "Dados para cadastro/atualização de medicamento")
 public class CadastrarMedicamentoRequest {
     
+    @NotBlank(message = "Nome é obrigatório")
     @Schema(description = "Nome do medicamento", example = "Paracetamol", required = true)
     private String nome;
     
+    @NotNull(message = "Tipo é obrigatório")
     @Schema(description = "Tipo do medicamento", example = "ANALGESICO", required = true)
     private TipoMedicamento tipo;
     
     @Schema(description = "Fabricante do medicamento", example = "EMS")
     private String fabricante;
     
+    @NotNull(message = "Data de validade é obrigatória")
+    @Future(message = "Data de validade deve ser futura")
     @Schema(description = "Data de validade do medicamento", example = "2025-12-31")
     private LocalDate dataValidade;
     
