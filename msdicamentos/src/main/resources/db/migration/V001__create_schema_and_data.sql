@@ -22,7 +22,6 @@ CREATE TABLE unidades_saude (
     endereco TEXT NOT NULL,
     telefone VARCHAR(20),
     email VARCHAR(255),
-    tipo VARCHAR(50) NOT NULL,
     ativa BOOLEAN DEFAULT TRUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -54,16 +53,15 @@ CREATE INDEX idx_medicamento_unidade_quantidade ON medicamento_unidade_saude(qua
 CREATE INDEX idx_medicamentos_nome ON medicamentos(nome);
 CREATE INDEX idx_medicamentos_tipo ON medicamentos(tipo);
 CREATE INDEX idx_unidades_saude_nome ON unidades_saude(nome);
-CREATE INDEX idx_unidades_saude_tipo ON unidades_saude(tipo);
 
 -- Inserir dados de exemplo
 
 -- Unidades de saúde
-INSERT INTO unidades_saude (nome, endereco, telefone, email, tipo, ativa) VALUES
-('UBS Vila Madalena', 'Rua Fradique Coutinho, 123 - Vila Madalena', '(11) 3021-1234', 'ubs.vilamadalena@saude.sp.gov.br', 'UBS', true),
-('Hospital das Clínicas', 'Av. Dr. Enéas de Carvalho Aguiar, 255 - Cerqueira César', '(11) 2661-0000', 'contato@hc.fm.usp.br', 'HOSPITAL', true),
-('UBS Cidade Tiradentes', 'Rua dos Têxteis, 789 - Cidade Tiradentes', '(11) 2031-5678', 'ubs.cidadetiradentes@saude.sp.gov.br', 'UBS', true),
-('Clínica São Paulo', 'Rua Augusta, 456 - Consolação', '(11) 3256-7890', 'contato@clinicasp.com.br', 'CLINICA', true);
+INSERT INTO unidades_saude (nome, endereco, telefone, email, ativa) VALUES
+('UBS Vila Madalena', 'Rua Fradique Coutinho, 123 - Vila Madalena', '(11) 3021-1234', 'ubs.vilamadalena@saude.sp.gov.br', true),
+('Hospital das Clínicas', 'Av. Dr. Enéas de Carvalho Aguiar, 255 - Cerqueira César', '(11) 2661-0000', 'contato@hc.fm.usp.br', true),
+('UBS Cidade Tiradentes', 'Rua dos Têxteis, 789 - Cidade Tiradentes', '(11) 2031-5678', 'ubs.cidadetiradentes@saude.sp.gov.br', true),
+('Clínica São Paulo', 'Rua Augusta, 456 - Consolação', '(11) 3256-7890', 'contato@clinicasp.com.br', true);
 
 -- Medicamentos
 INSERT INTO medicamentos (nome, tipo, fabricante, data_validade, dosagem, forma_farmaceutica, principio_ativo, lote, data_fabricacao, precisa_receita) VALUES
