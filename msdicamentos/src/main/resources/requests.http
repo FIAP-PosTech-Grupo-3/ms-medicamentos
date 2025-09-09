@@ -1,3 +1,6 @@
+####################
+# MEDICAMENTOS
+####################
 
 ### Cadastrar Medicamento - Sucesso
 POST http://localhost:8080/api/medicamentos
@@ -7,14 +10,7 @@ Content-Type: application/json
   "nome": "Paracetamol",
   "tipo": "ANALGESICO",
   "fabricante": "EMS",
-  "dataValidade"### Cadastrar Unidade de Saúde - Erro: Nome vazio (400 Bad Request)
-POST http://localhost:8080/api/unidades-saude
-Content-Type: application/json
-
-{
-  "nome": "",
-  "endereco": "Rua das Flores, 123"
-}2-31",
+  "dataValidade": "2025-12-31",
   "dosagem": "500mg",
   "formaFarmaceutica": "COMPRIMIDO",
   "principioAtivo": "Paracetamol",
@@ -68,7 +64,6 @@ Content-Type: application/json
 ###
 
 ### Buscar Medicamento por ID
-
 GET http://localhost:8080/api/medicamentos/1
 
 ###
@@ -166,8 +161,6 @@ Content-Type: application/json
 ### Deletar Medicamento - Sucesso (204)
 DELETE http://localhost:8080/api/medicamentos/1
 
-
-
 ###
 
 ### Deletar Medicamento - ID não encontrado (404)
@@ -203,6 +196,17 @@ Content-Type: application/json
   "telefone": "(11) 2661-0000",
   "email": "contato@hc.fm.usp.br",
   "ativa": true
+}
+
+###
+
+### Cadastrar Unidade de Saúde - Erro: Nome vazio (400 Bad Request)
+POST http://localhost:8080/api/unidades-saude
+Content-Type: application/json
+
+{
+  "nome": "",
+  "endereco": "Rua das Flores, 123"
 }
 
 ###
@@ -273,9 +277,9 @@ DELETE http://localhost:8080/api/unidades-saude/999
 
 ###
 
-### ========================================
-### CRUD DE USUÁRIOS
-### ========================================
+####################
+# USUÁRIOS
+####################
 
 ### Cadastrar usuário ADMIN - Sucesso (201)
 POST http://localhost:8080/api/usuarios
@@ -392,19 +396,6 @@ Content-Type: application/json
 
 ###
 
-### Cadastrar usuário - Erro: Senha muito curta (400 Bad Request)
-POST http://localhost:8080/api/usuarios
-Content-Type: application/json
-
-{
-  "nome": "Teste",
-  "email": "teste@email.com",
-  "senha": "123",
-  "papel": "ADMIN"
-}
-
-###
-
 ### Cadastrar usuário - Erro: Email duplicado (409 Conflict)
 POST http://localhost:8080/api/usuarios
 Content-Type: application/json
@@ -415,3 +406,5 @@ Content-Type: application/json
   "senha": "senha123",
   "papel": "USUARIO"
 }
+
+###
