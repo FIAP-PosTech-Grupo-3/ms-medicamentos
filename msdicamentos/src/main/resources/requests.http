@@ -270,3 +270,148 @@ DELETE http://localhost:8080/api/unidades-saude/1
 
 ### Deletar Unidade de Saúde - ID não encontrado (404)
 DELETE http://localhost:8080/api/unidades-saude/999
+
+###
+
+### ========================================
+### CRUD DE USUÁRIOS
+### ========================================
+
+### Cadastrar usuário ADMIN - Sucesso (201)
+POST http://localhost:8080/api/usuarios
+Content-Type: application/json
+
+{
+  "nome": "Admin Teste",
+  "email": "admin.teste@email.com",
+  "senha": "admin123",
+  "papel": "ADMIN",
+  "ativo": true
+}
+
+###
+
+### Cadastrar usuário comum - Sucesso (201)
+POST http://localhost:8080/api/usuarios
+Content-Type: application/json
+
+{
+  "nome": "Usuario Comum",
+  "email": "usuario.comum@email.com", 
+  "senha": "usuario123",
+  "papel": "USUARIO",
+  "ativo": true
+}
+
+###
+
+### Listar todos os usuários - Sucesso (200)
+GET http://localhost:8080/api/usuarios?page=0&size=10&sort=nome&direction=asc
+
+###
+
+### Buscar usuário por ID - Sucesso (200)
+GET http://localhost:8080/api/usuarios/1
+
+###
+
+### Buscar usuário por ID - Não encontrado (404)
+GET http://localhost:8080/api/usuarios/999
+
+###
+
+### Buscar usuários por nome - Sucesso (200)
+GET http://localhost:8080/api/usuarios/buscar?nome=Admin&page=0&size=10
+
+###
+
+### Listar apenas usuários ativos - Sucesso (200)
+GET http://localhost:8080/api/usuarios/ativos?page=0&size=10
+
+###
+
+### Atualizar usuário - Sucesso (200)
+PUT http://localhost:8080/api/usuarios/1
+Content-Type: application/json
+
+{
+  "nome": "Admin Atualizado",
+  "email": "admin.atualizado@email.com",
+  "papel": "ADMIN",
+  "ativo": true
+}
+
+###
+
+### Atualizar usuário - ID não encontrado (404)
+PUT http://localhost:8080/api/usuarios/999
+Content-Type: application/json
+
+{
+  "nome": "Usuario Inexistente",
+  "email": "inexistente@email.com",
+  "papel": "USUARIO",
+  "ativo": true
+}
+
+###
+
+### Deletar usuário - Sucesso (204)
+DELETE http://localhost:8080/api/usuarios/2
+
+###
+
+### Deletar usuário - ID não encontrado (404)
+DELETE http://localhost:8080/api/usuarios/999
+
+###
+
+### Cadastrar usuário - Erro: Nome vazio (400 Bad Request)
+POST http://localhost:8080/api/usuarios
+Content-Type: application/json
+
+{
+  "nome": "",
+  "email": "email@teste.com",
+  "senha": "senha123",
+  "papel": "ADMIN"
+}
+
+###
+
+### Cadastrar usuário - Erro: Email inválido (400 Bad Request)
+POST http://localhost:8080/api/usuarios
+Content-Type: application/json
+
+{
+  "nome": "Teste",
+  "email": "email-invalido",
+  "senha": "senha123",
+  "papel": "ADMIN"
+}
+
+###
+
+### Cadastrar usuário - Erro: Senha muito curta (400 Bad Request)
+POST http://localhost:8080/api/usuarios
+Content-Type: application/json
+
+{
+  "nome": "Teste",
+  "email": "teste@email.com",
+  "senha": "123",
+  "papel": "ADMIN"
+}
+
+###
+
+### Cadastrar usuário - Erro: Email duplicado (409 Conflict)
+POST http://localhost:8080/api/usuarios
+Content-Type: application/json
+
+{
+  "nome": "Teste Duplicado",
+  "email": "admin@medicamentos.com",
+  "senha": "senha123",
+  "papel": "USUARIO"
+}

@@ -18,7 +18,6 @@ public class Usuario {
     private PapelUsuario papel;
     private Boolean ativo;
     private LocalDateTime dataCriacao;
-    private LocalDateTime ultimoAcesso;
 
     public boolean isAtivo() {
         return ativo != null && ativo;
@@ -32,7 +31,28 @@ public class Usuario {
         return isAdmin();
     }
 
-    public void registrarAcesso() {
-        this.ultimoAcesso = LocalDateTime.now();
+    public boolean podeGerenciarUnidadeSaude() {
+        return isAdmin();
+    }
+
+    public boolean podeGerenciarUsuarios() {
+        return isAdmin();
+    }
+
+    public boolean isValido() {
+        return nome != null && !nome.trim().isEmpty() &&
+               email != null && !email.trim().isEmpty() && isEmailValido();
+    }
+
+    private boolean isEmailValido() {
+        return email.contains("@") && email.contains(".");
+    }
+
+    public void ativar() {
+        this.ativo = true;
+    }
+
+    public void desativar() {
+        this.ativo = false;
     }
 }
