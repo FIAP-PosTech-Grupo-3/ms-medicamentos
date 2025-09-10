@@ -1,0 +1,410 @@
+####################
+# MEDICAMENTOS
+####################
+
+### Cadastrar Medicamento - Sucesso
+POST http://localhost:8080/api/medicamentos
+Content-Type: application/json
+
+{
+  "nome": "Paracetamol",
+  "tipo": "ANALGESICO",
+  "fabricante": "EMS",
+  "dataValidade": "2025-12-31",
+  "dosagem": "500mg",
+  "formaFarmaceutica": "COMPRIMIDO",
+  "principioAtivo": "Paracetamol",
+  "lote": "LOT123456",
+  "dataFabricacao": "2024-01-15",
+  "precisaReceita": false
+}
+
+###
+
+### Cadastrar Medicamento - Erro: Nome vazio (400 Bad Request)
+POST http://localhost:8080/api/medicamentos
+Content-Type: application/json
+
+{
+  "nome": "",
+  "tipo": "ANALGESICO",
+  "fabricante": "EMS"
+}
+
+###
+
+### Cadastrar Medicamento - Erro: Tipo null (400 Bad Request)
+POST http://localhost:8080/api/medicamentos
+Content-Type: application/json
+
+{
+  "nome": "Dipirona",
+  "fabricante": "Neo Química"
+}
+
+###
+
+### Cadastrar Medicamento com Receita
+POST http://localhost:8080/api/medicamentos
+Content-Type: application/json
+
+{
+  "nome": "Amoxicilina",
+  "tipo": "ANTIBIOTICO",
+  "fabricante": "Medley",
+  "dataValidade": "2026-06-30",
+  "dosagem": "875mg",
+  "formaFarmaceutica": "COMPRIMIDO",
+  "principioAtivo": "Amoxicilina",
+  "lote": "AMX789",
+  "dataFabricacao": "2024-03-10",
+  "precisaReceita": true
+}
+
+###
+
+### Buscar Medicamento por ID
+GET http://localhost:8080/api/medicamentos/1
+
+###
+
+### Buscar Medicamento por ID - Não encontrado (404)
+GET http://localhost:8080/api/medicamentos/999
+
+###
+
+### Buscar Todos os Medicamentos - Primeira página
+GET http://localhost:8080/api/medicamentos
+
+###
+
+### Buscar Todos os Medicamentos - Com paginação personalizada
+GET http://localhost:8080/api/medicamentos?page=0&size=5&sortBy=nome&sortDirection=ASC
+
+###
+
+### Buscar Todos os Medicamentos - Ordenado por data de validade
+GET http://localhost:8080/api/medicamentos?page=0&size=10&sortBy=dataValidade&sortDirection=DESC
+
+###
+
+### Buscar Medicamentos por Nome - "Paracetamol"
+GET http://localhost:8080/api/medicamentos/buscar?nome=Paracetamol
+
+###
+
+### Buscar Medicamentos por Nome - Busca parcial "para"
+GET http://localhost:8080/api/medicamentos/buscar?nome=para&page=0&size=10
+
+###
+
+### Buscar Medicamentos por Nome - Com paginação
+GET http://localhost:8080/api/medicamentos/buscar?nome=a&page=0&size=5&sortBy=nome&sortDirection=ASC
+
+###
+
+### Buscar Medicamentos por Nome - Nome vazio (400 Bad Request)
+GET http://localhost:8080/api/medicamentos/buscar?nome=
+
+###
+
+### Atualizar Medicamento - Sucesso
+PUT http://localhost:8080/api/medicamentos/1
+Content-Type: application/json
+
+{
+  "nome": "Paracetamol 750mg",
+  "tipo": "ANALGESICO",
+  "fabricante": "EMS Pharma",
+  "dataValidade": "2025-12-31",
+  "dosagem": "750mg",
+  "formaFarmaceutica": "COMPRIMIDO",
+  "principioAtivo": "Paracetamol",
+  "lote": "LOT123456-NEW",
+  "dataFabricacao": "2024-01-15",
+  "precisaReceita": false
+}
+
+###
+
+### Atualizar Medicamento - ID não encontrado (404)
+PUT http://localhost:8080/api/medicamentos/999
+Content-Type: application/json
+
+{
+  "nome": "Medicamento Inexistente",
+  "tipo": "ANALGESICO",
+  "fabricante": "Fabricante",
+  "dataValidade": "2025-12-31",
+  "dosagem": "500mg",
+  "formaFarmaceutica": "COMPRIMIDO",
+  "principioAtivo": "Princípio Ativo",
+  "lote": "LOT999",
+  "dataFabricacao": "2024-01-15",
+  "precisaReceita": false
+}
+
+###
+
+### Atualizar Medicamento - Dados inválidos (400)
+PUT http://localhost:8080/api/medicamentos/1
+Content-Type: application/json
+
+{
+  "nome": "",
+  "tipo": "ANALGESICO",
+  "fabricante": "EMS"
+}
+
+###
+
+### Deletar Medicamento - Sucesso (204)
+DELETE http://localhost:8080/api/medicamentos/1
+
+###
+
+### Deletar Medicamento - ID não encontrado (404)
+DELETE http://localhost:8080/api/medicamentos/999
+
+###
+
+####################
+# UNIDADES DE SAÚDE
+####################
+
+### Cadastrar Unidade de Saúde - Sucesso
+POST http://localhost:8080/api/unidades-saude
+Content-Type: application/json
+
+{
+  "nome": "UBS Vila Esperança",
+  "endereco": "Rua das Flores, 123 - Vila Esperança - São Paulo/SP",
+  "telefone": "(11) 3456-7890",
+  "email": "ubs.vilaesperanca@saude.sp.gov.br",
+  "ativa": true
+}
+
+###
+
+### Cadastrar Hospital - Sucesso
+POST http://localhost:8080/api/unidades-saude
+Content-Type: application/json
+
+{
+  "nome": "Hospital das Clínicas",
+  "endereco": "Av. Dr. Enéas de Carvalho Aguiar, 255 - Cerqueira César - São Paulo/SP",
+  "telefone": "(11) 2661-0000",
+  "email": "contato@hc.fm.usp.br",
+  "ativa": true
+}
+
+###
+
+### Cadastrar Unidade de Saúde - Erro: Nome vazio (400 Bad Request)
+POST http://localhost:8080/api/unidades-saude
+Content-Type: application/json
+
+{
+  "nome": "",
+  "endereco": "Rua das Flores, 123"
+}
+
+###
+
+### Cadastrar Unidade de Saúde - Erro: Nome muito curto (400 Bad Request)
+POST http://localhost:8080/api/unidades-saude
+Content-Type: application/json
+
+{
+  "nome": "UB",
+  "endereco": "Rua das Flores, 123"
+}
+
+###
+
+### Buscar Unidade de Saúde por ID - Sucesso
+GET http://localhost:8080/api/unidades-saude/1
+
+###
+
+### Buscar Unidade de Saúde por ID - Não encontrada (404)
+GET http://localhost:8080/api/unidades-saude/999
+
+###
+
+### Listar todas as Unidades de Saúde - Primeira página
+GET http://localhost:8080/api/unidades-saude?page=0&size=10&sort=nome&direction=asc
+
+###
+
+### Buscar Unidades de Saúde por nome
+GET http://localhost:8080/api/unidades-saude/buscar?nome=Vila&page=0&size=10
+
+###
+
+### Atualizar Unidade de Saúde - Sucesso
+PUT http://localhost:8080/api/unidades-saude/1
+Content-Type: application/json
+
+{
+  "nome": "UBS Vila Esperança - Atualizada",
+  "endereco": "Rua das Flores, 123 - Vila Esperança - São Paulo/SP - CEP: 12345-000",
+  "telefone": "(11) 3456-7890",
+  "email": "ubs.vilaesperanca.nova@saude.sp.gov.br",
+  "ativa": true
+}
+
+###
+
+### Atualizar Unidade de Saúde - ID não encontrado (404)
+PUT http://localhost:8080/api/unidades-saude/999
+Content-Type: application/json
+
+{
+  "nome": "UBS Inexistente",
+  "endereco": "Rua Inexistente, 999"
+}
+
+###
+
+### Deletar Unidade de Saúde - Sucesso (204)
+DELETE http://localhost:8080/api/unidades-saude/1
+
+###
+
+### Deletar Unidade de Saúde - ID não encontrado (404)
+DELETE http://localhost:8080/api/unidades-saude/999
+
+###
+
+####################
+# USUÁRIOS
+####################
+
+### Cadastrar usuário ADMIN - Sucesso (201)
+POST http://localhost:8080/api/usuarios
+Content-Type: application/json
+
+{
+  "nome": "Admin Teste",
+  "email": "admin.teste@email.com",
+  "senha": "admin123",
+  "papel": "ADMIN",
+  "ativo": true
+}
+
+###
+
+### Cadastrar usuário comum - Sucesso (201)
+POST http://localhost:8080/api/usuarios
+Content-Type: application/json
+
+{
+  "nome": "Usuario Comum",
+  "email": "usuario.comum@email.com", 
+  "senha": "usuario123",
+  "papel": "USUARIO",
+  "ativo": true
+}
+
+###
+
+### Listar todos os usuários - Sucesso (200)
+GET http://localhost:8080/api/usuarios?page=0&size=10&sort=nome&direction=asc
+
+###
+
+### Buscar usuário por ID - Sucesso (200)
+GET http://localhost:8080/api/usuarios/1
+
+###
+
+### Buscar usuário por ID - Não encontrado (404)
+GET http://localhost:8080/api/usuarios/999
+
+###
+
+### Buscar usuários por nome - Sucesso (200)
+GET http://localhost:8080/api/usuarios/buscar?nome=Admin&page=0&size=10
+
+###
+
+### Listar apenas usuários ativos - Sucesso (200)
+GET http://localhost:8080/api/usuarios/ativos?page=0&size=10
+
+###
+
+### Atualizar usuário - Sucesso (200)
+PUT http://localhost:8080/api/usuarios/1
+Content-Type: application/json
+
+{
+  "nome": "Admin Atualizado",
+  "email": "admin.atualizado@email.com",
+  "papel": "ADMIN",
+  "ativo": true
+}
+
+###
+
+### Atualizar usuário - ID não encontrado (404)
+PUT http://localhost:8080/api/usuarios/999
+Content-Type: application/json
+
+{
+  "nome": "Usuario Inexistente",
+  "email": "inexistente@email.com",
+  "papel": "USUARIO",
+  "ativo": true
+}
+
+###
+
+### Deletar usuário - Sucesso (204)
+DELETE http://localhost:8080/api/usuarios/2
+
+###
+
+### Deletar usuário - ID não encontrado (404)
+DELETE http://localhost:8080/api/usuarios/999
+
+###
+
+### Cadastrar usuário - Erro: Nome vazio (400 Bad Request)
+POST http://localhost:8080/api/usuarios
+Content-Type: application/json
+
+{
+  "nome": "",
+  "email": "email@teste.com",
+  "senha": "senha123",
+  "papel": "ADMIN"
+}
+
+###
+
+### Cadastrar usuário - Erro: Email inválido (400 Bad Request)
+POST http://localhost:8080/api/usuarios
+Content-Type: application/json
+
+{
+  "nome": "Teste",
+  "email": "email-invalido",
+  "senha": "senha123",
+  "papel": "ADMIN"
+}
+
+###
+
+### Cadastrar usuário - Erro: Email duplicado (409 Conflict)
+POST http://localhost:8080/api/usuarios
+Content-Type: application/json
+
+{
+  "nome": "Teste Duplicado",
+  "email": "admin@medicamentos.com",
+  "senha": "senha123",
+  "papel": "USUARIO"
+}
+
+###
