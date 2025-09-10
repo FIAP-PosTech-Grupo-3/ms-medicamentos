@@ -17,7 +17,6 @@ public class EstoqueMedicamentoMapper {
         entity.setUnidadeSaudeId(domain.getUnidadeSaudeId());
         entity.setQuantidade(domain.getQuantidade());
         entity.setQuantidadeMinima(domain.getQuantidadeMinima());
-        entity.setUltimaAtualizacao(domain.getUltimaAtualizacao());
         
         return entity;
     }
@@ -33,7 +32,6 @@ public class EstoqueMedicamentoMapper {
         domain.setUnidadeSaudeId(entity.getUnidadeSaudeId());
         domain.setQuantidade(entity.getQuantidade());
         domain.setQuantidadeMinima(entity.getQuantidadeMinima());
-        domain.setUltimaAtualizacao(entity.getUltimaAtualizacao());
         
         return domain;
     }

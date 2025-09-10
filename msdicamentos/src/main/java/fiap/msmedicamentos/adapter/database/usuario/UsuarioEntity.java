@@ -5,8 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @Entity
 @Table(name = "usuarios")
 @Data
@@ -33,17 +31,4 @@ public class UsuarioEntity {
     
     @Column(nullable = false)
     private Boolean ativo;
-    
-    @Column(name = "data_criacao")
-    private LocalDateTime dataCriacao;
-    
-    @PrePersist
-    public void prePersist() {
-        if (dataCriacao == null) {
-            dataCriacao = LocalDateTime.now();
-        }
-        if (ativo == null) {
-            ativo = true;
-        }
-    }
 }

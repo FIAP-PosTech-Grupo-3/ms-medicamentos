@@ -33,7 +33,6 @@ public class AtualizarUsuarioUseCase {
         }
         
         usuarioAtualizado.setId(id);
-        usuarioAtualizado.setDataCriacao(usuarioAtual.getDataCriacao()); // Preservar data de criação
         
         if (!usuarioAtualizado.isValido()) {
             throw new UsuarioInvalidoException("Dados do usuário são inválidos");

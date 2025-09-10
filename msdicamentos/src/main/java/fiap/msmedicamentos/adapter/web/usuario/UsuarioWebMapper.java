@@ -46,7 +46,6 @@ public class UsuarioWebMapper {
         response.setEmail(usuario.getEmail());
         response.setPapel(usuario.getPapel());
         response.setAtivo(usuario.getAtivo());
-        response.setDataCriacao(usuario.getDataCriacao());
         
         return response;
     }

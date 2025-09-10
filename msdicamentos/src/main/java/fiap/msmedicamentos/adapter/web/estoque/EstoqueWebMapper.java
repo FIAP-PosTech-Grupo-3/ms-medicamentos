@@ -18,16 +18,6 @@ public class EstoqueWebMapper {
         response.setQuantidade(estoque.getQuantidade());
         response.setQuantidadeMinima(estoque.getQuantidadeMinima());
         response.setPrecisaReposicao(estoque.precisaReposicao());
-        response.setUltimaAtualizacao(estoque.getUltimaAtualizacao());
-        
-        // Se tiver objetos relacionados carregados
-        if (estoque.getMedicamento() != null) {
-            response.setNomeMedicamento(estoque.getMedicamento().getNome());
-        }
-        
-        if (estoque.getUnidadeSaude() != null) {
-            response.setNomeUnidadeSaude(estoque.getUnidadeSaude().getNome());
-        }
         
         return response;
     }

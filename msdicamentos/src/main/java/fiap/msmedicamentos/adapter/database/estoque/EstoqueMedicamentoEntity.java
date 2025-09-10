@@ -5,8 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @Entity
 @Table(name = "medicamento_unidade_saude")
 @Data
@@ -29,13 +27,4 @@ public class EstoqueMedicamentoEntity {
     
     @Column(name = "quantidade_minima")
     private Integer quantidadeMinima;
-    
-    @Column(name = "ultima_atualizacao")
-    private LocalDateTime ultimaAtualizacao;
-    
-    @PrePersist
-    @PreUpdate
-    public void preUpdate() {
-        ultimaAtualizacao = LocalDateTime.now();
-    }
 }

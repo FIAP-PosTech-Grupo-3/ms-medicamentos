@@ -12,15 +12,9 @@ public class MedicamentoMapper {
         MedicamentoEntity entity = new MedicamentoEntity();
         entity.setId(domain.getId());
         entity.setNome(domain.getNome());
-        entity.setTipo(domain.getTipo());
-        entity.setFabricante(domain.getFabricante());
-        entity.setDataValidade(domain.getDataValidade());
-        entity.setDosagem(domain.getDosagem());
-        entity.setFormaFarmaceutica(domain.getFormaFarmaceutica());
         entity.setPrincipioAtivo(domain.getPrincipioAtivo());
-        entity.setLote(domain.getLote());
-        entity.setDataFabricacao(domain.getDataFabricacao());
-        entity.setPrecisaReceita(domain.isPrecisaReceita());
+        entity.setFabricante(domain.getFabricante());
+        entity.setDosagem(domain.getDosagem());
         
         return entity;
     }
@@ -31,15 +25,9 @@ public class MedicamentoMapper {
         return new Medicamento(
             entity.getId(),
             entity.getNome(),
-            entity.getTipo(),
-            entity.getFabricante(),
-            entity.getDataValidade(),
-            entity.getDosagem(),
-            entity.getFormaFarmaceutica(),
             entity.getPrincipioAtivo(),
-            entity.getLote(),
-            entity.getDataFabricacao(),
-            entity.getPrecisaReceita() != null ? entity.getPrecisaReceita() : false
+            entity.getFabricante(),
+            entity.getDosagem()
         );
     }
 }
