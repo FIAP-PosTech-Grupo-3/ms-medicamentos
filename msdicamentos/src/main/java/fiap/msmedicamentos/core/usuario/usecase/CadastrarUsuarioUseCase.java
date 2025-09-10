@@ -6,6 +6,7 @@ import fiap.msmedicamentos.core.usuario.exception.UsuarioJaExisteException;
 import fiap.msmedicamentos.core.usuario.gateway.UsuarioGateway;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -16,15 +17,21 @@ import java.time.LocalDateTime;
 public class CadastrarUsuarioUseCase {
 
     private final UsuarioGateway usuarioGateway;
+    private final PasswordEncoder passwordEncoder;
 
     public Usuario execute(Usuario usuario) {
         log.info("Iniciando cadastro de novo usuário: {}", usuario.getEmail());
         
-        validar(usuario);
+        if (!usuario.isValido()) {
+            throw new UsuarioInvalidoException("Dados do usuário são inválidos");
+        }
         
         if (usuarioGateway.existePorEmail(usuario.getEmail())) {
             throw new UsuarioJaExisteException(usuario.getEmail());
         }
+        
+        // Criptografar a senha antes de salvar
+        usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
         
         // Configurações padrão para novo usuário
         usuario.setAtivo(true);
@@ -34,11 +41,5 @@ public class CadastrarUsuarioUseCase {
         log.info("Usuário cadastrado com ID: {}", usuarioSalvo.getId());
         
         return usuarioSalvo;
-    }
-
-    private void validar(Usuario usuario) {
-        if (!usuario.isValido()) {
-            throw new UsuarioInvalidoException("Dados do usuário são inválidos");
-        }
     }
 }

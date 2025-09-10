@@ -116,6 +116,14 @@ public class UnidadeSaudeController {
         
         log.debug("Buscando todas as unidades de saúde - página: {}, tamanho: {}", page, size);
         
+        // Validar parâmetros de paginação
+        if (page < 0) {
+            page = 0;
+        }
+        if (size <= 0 || size > 100) {
+            size = 10;
+        }
+        
         Sort.Direction sortDirection = "desc".equalsIgnoreCase(direction) ? Sort.Direction.DESC : Sort.Direction.ASC;
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, sort));
         
@@ -139,6 +147,14 @@ public class UnidadeSaudeController {
             @Parameter(description = "Direção da ordenação") @RequestParam(defaultValue = "asc") String direction) {
         
         log.debug("Buscando unidades de saúde por nome: {} - página: {}, tamanho: {}", nome, page, size);
+        
+        // Validar parâmetros de paginação
+        if (page < 0) {
+            page = 0;
+        }
+        if (size <= 0 || size > 100) {
+            size = 10;
+        }
         
         Sort.Direction sortDirection = "desc".equalsIgnoreCase(direction) ? Sort.Direction.DESC : Sort.Direction.ASC;
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, sort));

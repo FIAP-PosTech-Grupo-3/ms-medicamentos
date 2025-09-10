@@ -16,17 +16,14 @@ public class CadastrarMedicamentoUseCase {
 
     public Medicamento execute(Medicamento medicamento) {
         log.debug("Validando medicamento: {}", medicamento.getNome());
-        validar(medicamento);
         
-        Medicamento medicamentoSalvo = medicamentoGateway.salvar(medicamento);
-        log.info("Medicamento salvo com ID: {}", medicamentoSalvo.getId());
-        
-        return medicamentoSalvo;
-    }
-
-    private void validar(Medicamento medicamento) {
         if (!medicamento.isValido()) {
             throw new MedicamentoInvalidoException("Dados do medicamento são inválidos");
         }
+        
+        Medicamento medicamentoSalvo = medicamentoGateway.salvar(medicamento);
+        log.info("Medicamento cadastrado com ID: {}", medicamentoSalvo.getId());
+        
+        return medicamentoSalvo;
     }
 }

@@ -21,6 +21,10 @@ public class BuscarUnidadeSaudePorNomeUseCase {
         log.debug("Buscando unidades de saúde por nome: {} - página: {}, tamanho: {}", 
                  nome, pageable.getPageNumber(), pageable.getPageSize());
         
+        if (nome == null || nome.trim().isEmpty()) {
+            throw new IllegalArgumentException("Nome é obrigatório");
+        }
+        
         return unidadeSaudeGateway.buscarPorNome(nome, pageable);
     }
 }

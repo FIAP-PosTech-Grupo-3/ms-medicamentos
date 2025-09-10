@@ -3,6 +3,7 @@ package fiap.msmedicamentos.adapter.web.unidadesaude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 @Data
@@ -17,6 +18,7 @@ public class UnidadeSaudeRequest {
     @Schema(description = "Endereço completo da unidade", example = "Rua das Flores, 123 - Vila Esperança - São Paulo/SP", required = true)
     private String endereco;
     
+    @Pattern(regexp = "^$|^\\([0-9]{2}\\)\\s[0-9]{4,5}-[0-9]{4}$", message = "Telefone deve ter formato (XX) XXXXX-XXXX ou (XX) XXXX-XXXX")
     @Schema(description = "Telefone de contato", example = "(11) 3456-7890")
     private String telefone;
     

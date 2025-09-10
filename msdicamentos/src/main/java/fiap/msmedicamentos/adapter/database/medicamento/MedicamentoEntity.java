@@ -1,5 +1,6 @@
 package fiap.msmedicamentos.adapter.database.medicamento;
 
+import fiap.msmedicamentos.adapter.database.estoque.EstoqueMedicamentoEntity;
 import fiap.msmedicamentos.core.medicamento.enums.FormaFarmaceutica;
 import fiap.msmedicamentos.core.medicamento.enums.TipoMedicamento;
 import jakarta.persistence.*;
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "medicamentos")
@@ -55,6 +57,9 @@ public class MedicamentoEntity {
     
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+    
+    @OneToMany(mappedBy = "medicamentoId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<EstoqueMedicamentoEntity> estoques;
     
     @PrePersist
     public void prePersist() {

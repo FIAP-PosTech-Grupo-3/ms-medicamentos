@@ -17,17 +17,13 @@ public class CadastrarUnidadeSaudeUseCase {
     public UnidadeSaude execute(UnidadeSaude unidadeSaude) {
         log.info("Iniciando cadastro de nova unidade de saúde");
         
-        validar(unidadeSaude);
+        if (!unidadeSaude.isValida()) {
+            throw new UnidadeSaudeInvalidaException("Dados da unidade de saúde são inválidos");
+        }
         
         UnidadeSaude unidadeSaudeSalva = unidadeSaudeGateway.salvar(unidadeSaude);
         log.info("Unidade de saúde cadastrada com ID: {}", unidadeSaudeSalva.getId());
         
         return unidadeSaudeSalva;
-    }
-
-    private void validar(UnidadeSaude unidadeSaude) {
-        if (!unidadeSaude.isValida()) {
-            throw new UnidadeSaudeInvalidaException("Dados da unidade de saúde são inválidos");
-        }
     }
 }

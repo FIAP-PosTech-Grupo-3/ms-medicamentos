@@ -15,7 +15,7 @@ public class AtualizarMedicamentoUseCase {
     
     public Medicamento executar(Long id, Medicamento medicamento) {
         if (id == null) {
-            throw new MedicamentoInvalidoException("ID do medicamento é obrigatório");
+            throw new IllegalArgumentException("ID do medicamento é obrigatório");
         }
         
         if (!gateway.existePorId(id)) {
@@ -23,14 +23,11 @@ public class AtualizarMedicamentoUseCase {
         }
         
         medicamento.setId(id);
-        validar(medicamento);
         
-        return gateway.atualizar(medicamento);
-    }
-    
-    private void validar(Medicamento medicamento) {
         if (!medicamento.isValido()) {
             throw new MedicamentoInvalidoException("Dados do medicamento são inválidos");
         }
+        
+        return gateway.atualizar(medicamento);
     }
 }

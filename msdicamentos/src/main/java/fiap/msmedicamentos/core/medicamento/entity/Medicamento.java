@@ -27,6 +27,6 @@ public class Medicamento {
     public boolean isValido() {
         return nome != null && !nome.trim().isEmpty() &&
                 tipo != null &&
-                dataValidade != null && dataValidade.isAfter(LocalDate.now());
+                dataValidade != null && !dataValidade.isBefore(LocalDate.now());
     }
 }

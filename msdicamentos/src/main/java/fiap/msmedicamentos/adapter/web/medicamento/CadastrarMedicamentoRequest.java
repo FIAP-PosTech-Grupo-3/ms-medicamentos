@@ -1,5 +1,6 @@
 package fiap.msmedicamentos.adapter.web.medicamento;
 
+import fiap.msmedicamentos.adapter.web.medicamento.validation.ValidMedicamento;
 import fiap.msmedicamentos.core.medicamento.enums.FormaFarmaceutica;
 import fiap.msmedicamentos.core.medicamento.enums.TipoMedicamento;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -11,6 +12,7 @@ import lombok.Data;
 import java.time.LocalDate;
 
 @Data
+@ValidMedicamento
 @Schema(description = "Dados para cadastro/atualização de medicamento")
 public class CadastrarMedicamentoRequest {
     

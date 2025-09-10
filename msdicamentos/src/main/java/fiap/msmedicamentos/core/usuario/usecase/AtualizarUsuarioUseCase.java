@@ -35,17 +35,13 @@ public class AtualizarUsuarioUseCase {
         usuarioAtualizado.setId(id);
         usuarioAtualizado.setDataCriacao(usuarioAtual.getDataCriacao()); // Preservar data de criação
         
-        validar(usuarioAtualizado);
+        if (!usuarioAtualizado.isValido()) {
+            throw new UsuarioInvalidoException("Dados do usuário são inválidos");
+        }
         
         Usuario usuarioSalvo = usuarioGateway.atualizar(usuarioAtualizado);
         log.info("Usuário atualizado com ID: {}", usuarioSalvo.getId());
         
         return usuarioSalvo;
-    }
-
-    private void validar(Usuario usuario) {
-        if (!usuario.isValido()) {
-            throw new UsuarioInvalidoException("Dados do usuário são inválidos");
-        }
     }
 }
