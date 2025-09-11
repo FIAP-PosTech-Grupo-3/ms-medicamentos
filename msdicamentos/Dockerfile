@@ -4,7 +4,7 @@ FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
 
 # Copia o JAR já buildado
-COPY target/ms-medicamentos-0.0.1-SNAPSHOT.jar app.jar
+COPY target/ms-medicamentos-0.0.1.jar app.jar
 
 # Cria usuário não-root
 RUN addgroup -g 1001 -S appgroup && \

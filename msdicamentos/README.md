@@ -26,6 +26,39 @@ docker-compose up --build
 - Build automático (Maven integrado)
 - Swagger UI (documentação)
 
+## Autenticação
+
+A API utiliza **Basic Authentication**. Usuários são criados automaticamente na primeira execução:
+
+### Credenciais Padrão
+
+| Email | Senha | Papel | Descrição |
+|-------|-------|-------|-----------|
+| `admin@admin.com` | `admin` | ADMIN | Administrador com acesso total |
+| `user@user.com` | `user` | USUARIO | Usuário comum (apenas consultas) |
+| `admin@medicamentos.com` | `admin123` | ADMIN | Admin alternativo |
+
+### Exemplo de Uso
+```bash
+# Consultar medicamentos
+curl -u "admin@admin.com:admin" http://localhost:8080/api/medicamentos
+
+# Criar medicamento (apenas ADMIN)
+curl -X POST -u "admin@admin.com:admin" \
+  -H "Content-Type: application/json" \
+  -d '{"nome":"Aspirina"}' \
+  http://localhost:8080/api/medicamentos
+```
+
+### Permissões
+- **ADMIN**: Operações CRUD completas em todos os endpoints
+- **USUARIO**: Apenas consultas (GET) em medicamentos, unidades e estoque
+
+## Postman Collection
+
+Para importar no Postman, use o arquivo JSON gerado pelo Swagger:
+**http://localhost:8080/api-docs**
+
 ## Endpoints da API
 
 Após iniciar, a API estará disponível em: **http://localhost:8080**

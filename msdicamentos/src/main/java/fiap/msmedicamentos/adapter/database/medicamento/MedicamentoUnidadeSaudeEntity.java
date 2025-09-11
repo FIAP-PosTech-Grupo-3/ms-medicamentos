@@ -41,9 +41,6 @@ public class MedicamentoUnidadeSaudeEntity {
     @Column(name = "quantidade_minima")
     private Integer quantidadeMinima;
     
-    @Column(name = "ultima_atualizacao")
-    private LocalDateTime ultimaAtualizacao;
-    
     @Column(name = "created_at")
     private LocalDateTime createdAt;
     
@@ -62,7 +59,6 @@ public class MedicamentoUnidadeSaudeEntity {
     public void prePersist() {
         createdAt = LocalDateTime.now();
         updatedAt = LocalDateTime.now();
-        ultimaAtualizacao = LocalDateTime.now();
         if (quantidadeMinima == null) {
             quantidadeMinima = 10;
         }
@@ -71,6 +67,5 @@ public class MedicamentoUnidadeSaudeEntity {
     @PreUpdate
     public void preUpdate() {
         updatedAt = LocalDateTime.now();
-        ultimaAtualizacao = LocalDateTime.now();
     }
 }
