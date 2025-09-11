@@ -1,9 +1,6 @@
 package fiap.msmedicamentos.adapter.web.usuario;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fiap.msmedicamentos.adapter.web.usuario.CadastrarUsuarioRequest;
-import fiap.msmedicamentos.adapter.web.usuario.UsuarioResponse;
-import fiap.msmedicamentos.adapter.web.usuario.UsuarioWebMapper;
 import fiap.msmedicamentos.core.usuario.entity.Usuario;
 import fiap.msmedicamentos.core.usuario.enums.PapelUsuario;
 import fiap.msmedicamentos.core.usuario.exception.UsuarioNaoEncontradoException;
