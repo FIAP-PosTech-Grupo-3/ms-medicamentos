@@ -5,8 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,8 +15,6 @@ public class Usuario {
     private String senha;
     private PapelUsuario papel;
     private Boolean ativo;
-    private LocalDateTime dataCriacao;
-    private LocalDateTime ultimoAcesso;
 
     public boolean isAtivo() {
         return ativo != null && ativo;
@@ -32,7 +28,29 @@ public class Usuario {
         return isAdmin();
     }
 
-    public void registrarAcesso() {
-        this.ultimoAcesso = LocalDateTime.now();
+    public boolean podeGerenciarUnidadeSaude() {
+        return isAdmin();
+    }
+
+    public boolean podeGerenciarUsuarios() {
+        return isAdmin();
+    }
+
+    public boolean isValido() {
+        return nome != null && !nome.trim().isEmpty() &&
+               email != null && !email.trim().isEmpty() && isEmailValido() &&
+               papel != null;
+    }
+
+    private boolean isEmailValido() {
+        return email.contains("@") && email.contains(".");
+    }
+
+    public void ativar() {
+        this.ativo = true;
+    }
+
+    public void desativar() {
+        this.ativo = false;
     }
 }

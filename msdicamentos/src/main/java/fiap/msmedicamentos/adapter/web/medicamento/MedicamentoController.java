@@ -106,6 +106,14 @@ public class MedicamentoController {
             @Parameter(description = "Campo para ordenação") @RequestParam(defaultValue = "id") String sortBy,
             @Parameter(description = "Direção da ordenação (ASC/DESC)") @RequestParam(defaultValue = "ASC") String sortDirection) {
         
+        // Validar parâmetros de paginação
+        if (page < 0) {
+            page = 0;
+        }
+        if (size <= 0 || size > 100) {
+            size = 20;
+        }
+        
         Sort.Direction direction = Sort.Direction.fromString(sortDirection);
         Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));
         

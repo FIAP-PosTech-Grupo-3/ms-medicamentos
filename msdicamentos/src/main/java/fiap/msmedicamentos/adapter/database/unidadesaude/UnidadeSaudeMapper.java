@@ -13,8 +13,6 @@ public class UnidadeSaudeMapper {
         entity.setId(domain.getId());
         entity.setNome(domain.getNome());
         entity.setEndereco(domain.getEndereco());
-        entity.setTelefone(domain.getTelefone());
-        entity.setEmail(domain.getEmail());
         entity.setAtiva(domain.isAtiva());
         
         return entity;
@@ -27,8 +25,6 @@ public class UnidadeSaudeMapper {
             entity.getId(),
             entity.getNome(),
             entity.getEndereco(),
-            entity.getTelefone(),
-            entity.getEmail(),
             entity.getAtiva() != null ? entity.getAtiva() : false
         );
     }

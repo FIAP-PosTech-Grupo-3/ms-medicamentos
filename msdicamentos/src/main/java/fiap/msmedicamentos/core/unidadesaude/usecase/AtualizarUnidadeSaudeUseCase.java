@@ -23,17 +23,14 @@ public class AtualizarUnidadeSaudeUseCase {
         }
         
         unidadeSaude.setId(id);
-        validar(unidadeSaude);
+        
+        if (!unidadeSaude.isValida()) {
+            throw new UnidadeSaudeInvalidaException("Dados da unidade de saúde são inválidos");
+        }
         
         UnidadeSaude unidadeSaudeAtualizada = unidadeSaudeGateway.atualizar(unidadeSaude);
         log.info("Unidade de saúde atualizada com ID: {}", unidadeSaudeAtualizada.getId());
         
         return unidadeSaudeAtualizada;
-    }
-
-    private void validar(UnidadeSaude unidadeSaude) {
-        if (!unidadeSaude.isValida()) {
-            throw new UnidadeSaudeInvalidaException("Dados da unidade de saúde são inválidos");
-        }
     }
 }

@@ -10,20 +10,12 @@ import java.util.stream.Collectors;
 public class MedicamentoWebMapper {
     
     public Medicamento toDomain(CadastrarMedicamentoRequest request) {
-        if (request == null) return null;
-        
         return new Medicamento(
             null,
             request.getNome(),
-            request.getTipo(),
-            request.getFabricante(),
-            request.getDataValidade(),
-            request.getDosagem(),
-            request.getFormaFarmaceutica(),
             request.getPrincipioAtivo(),
-            request.getLote(),
-            request.getDataFabricacao(),
-            request.getPrecisaReceita() != null ? request.getPrecisaReceita() : false
+            request.getFabricante(),
+            request.getDosagem()
         );
     }
     
@@ -33,15 +25,9 @@ public class MedicamentoWebMapper {
         MedicamentoResponse response = new MedicamentoResponse();
         response.setId(medicamento.getId());
         response.setNome(medicamento.getNome());
-        response.setTipo(medicamento.getTipo());
-        response.setFabricante(medicamento.getFabricante());
-        response.setDataValidade(medicamento.getDataValidade());
-        response.setDosagem(medicamento.getDosagem());
-        response.setFormaFarmaceutica(medicamento.getFormaFarmaceutica());
         response.setPrincipioAtivo(medicamento.getPrincipioAtivo());
-        response.setLote(medicamento.getLote());
-        response.setDataFabricacao(medicamento.getDataFabricacao());
-        response.setPrecisaReceita(medicamento.isPrecisaReceita());
+        response.setFabricante(medicamento.getFabricante());
+        response.setDosagem(medicamento.getDosagem());
         
         return response;
     }

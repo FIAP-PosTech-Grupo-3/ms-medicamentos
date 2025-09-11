@@ -11,8 +11,6 @@ public class UnidadeSaude {
     private Long id;
     private String nome;
     private String endereco;
-    private String telefone;
-    private String email;
     private boolean ativa;
 
     public boolean isValida() {

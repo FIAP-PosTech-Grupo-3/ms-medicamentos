@@ -16,12 +16,6 @@ public class UnidadeSaudeResponse {
     @Schema(description = "Endereço completo da unidade", example = "Rua das Flores, 123 - Vila Esperança - São Paulo/SP")
     private String endereco;
     
-    @Schema(description = "Telefone de contato", example = "(11) 3456-7890")
-    private String telefone;
-    
-    @Schema(description = "E-mail para contato", example = "ubs.vilaesperanca@saude.sp.gov.br")
-    private String email;
-    
     @Schema(description = "Indica se a unidade está ativa", example = "true")
     private Boolean ativa;
 }
