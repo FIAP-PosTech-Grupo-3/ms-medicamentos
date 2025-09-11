@@ -29,6 +29,7 @@ import java.util.List;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -213,5 +214,105 @@ class MedicamentoControllerTest {
                 .andExpect(status().isNotFound());
 
         verify(deletarMedicamentoUseCase).executar(medicamentoId);
+    }
+
+    @Test
+    void deveBuscarMedicamentosPorNomeComSucesso() throws Exception {
+        // Arrange
+        String nome = "Paracetamol";
+        Medicamento medicamento1 = new Medicamento(1L, "Paracetamol", "Paracetamol", "EMS", "500mg");
+        Page<Medicamento> page = new PageImpl<>(Arrays.asList(medicamento1), PageRequest.of(0, 20), 1);
+        
+        PagedMedicamentoResponse pagedResponse = new PagedMedicamentoResponse();
+        pagedResponse.setContent(Arrays.asList(
+            createMedicamentoResponse(1L, "Paracetamol", "Paracetamol", "EMS", "500mg")
+        ));
+        pagedResponse.setTotalElements(1);
+
+        when(buscarMedicamentoPorNomeUseCase.execute(eq(nome), any())).thenReturn(page);
+        when(mapper.toPagedResponse(page)).thenReturn(pagedResponse);
+
+        // Act & Assert
+        mockMvc.perform(get("/api/medicamentos/buscar")
+                .param("nome", nome)
+                .param("page", "0")
+                .param("size", "20"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content").isArray())
+                .andExpect(jsonPath("$.totalElements").value(1));
+
+        verify(buscarMedicamentoPorNomeUseCase).execute(eq(nome), any());
+    }
+
+    @Test
+    void deveAtualizarMedicamentoComSucesso() throws Exception {
+        // Arrange
+        Long medicamentoId = 1L;
+        CadastrarMedicamentoRequest request = new CadastrarMedicamentoRequest();
+        request.setNome("Paracetamol Atualizado");
+        request.setPrincipioAtivo("Paracetamol");
+        request.setFabricante("EMS");
+        request.setDosagem("750mg");
+
+        Medicamento medicamentoDomain = new Medicamento(null, "Paracetamol Atualizado", "Paracetamol", "EMS", "750mg");
+        Medicamento medicamentoAtualizado = new Medicamento(1L, "Paracetamol Atualizado", "Paracetamol", "EMS", "750mg");
+        
+        MedicamentoResponse response = createMedicamentoResponse(1L, "Paracetamol Atualizado", "Paracetamol", "EMS", "750mg");
+
+        when(mapper.toDomain(request)).thenReturn(medicamentoDomain);
+        when(atualizarMedicamentoUseCase.executar(medicamentoId, medicamentoDomain)).thenReturn(medicamentoAtualizado);
+        when(mapper.toResponse(medicamentoAtualizado)).thenReturn(response);
+
+        // Act & Assert
+        mockMvc.perform(put("/api/medicamentos/{id}", medicamentoId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1L))
+                .andExpect(jsonPath("$.nome").value("Paracetamol Atualizado"))
+                .andExpect(jsonPath("$.dosagem").value("750mg"));
+
+        verify(atualizarMedicamentoUseCase).executar(medicamentoId, medicamentoDomain);
+    }
+
+    @Test
+    void deveRetornar404AoAtualizarMedicamentoInexistente() throws Exception {
+        // Arrange
+        Long medicamentoId = 999L;
+        CadastrarMedicamentoRequest request = new CadastrarMedicamentoRequest();
+        request.setNome("Medicamento Inexistente");
+        request.setPrincipioAtivo("Teste");
+        request.setFabricante("Teste");
+        request.setDosagem("100mg");
+
+        Medicamento medicamentoDomain = new Medicamento(null, "Medicamento Inexistente", "Teste", "Teste", "100mg");
+
+        when(mapper.toDomain(request)).thenReturn(medicamentoDomain);
+        when(atualizarMedicamentoUseCase.executar(medicamentoId, medicamentoDomain))
+                .thenThrow(new MedicamentoNaoEncontradoException(medicamentoId));
+
+        // Act & Assert
+        mockMvc.perform(put("/api/medicamentos/{id}", medicamentoId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isNotFound());
+
+        verify(atualizarMedicamentoUseCase).executar(medicamentoId, medicamentoDomain);
+    }
+
+    @Test
+    void deveRetornar400AoCadastrarMedicamentoComDadosInvalidos() throws Exception {
+        // Arrange
+        CadastrarMedicamentoRequest request = new CadastrarMedicamentoRequest();
+        // Request sem nome (inválido)
+        request.setPrincipioAtivo("Paracetamol");
+
+        // Act & Assert
+        mockMvc.perform(post("/api/medicamentos")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest());
+
+        verify(cadastrarMedicamentoUseCase, never()).execute(any());
     }
 }

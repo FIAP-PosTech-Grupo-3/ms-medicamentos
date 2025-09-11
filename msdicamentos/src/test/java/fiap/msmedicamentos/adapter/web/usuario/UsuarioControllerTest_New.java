@@ -1,9 +1,6 @@
 package fiap.msmedicamentos.adapter.web.usuario;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fiap.msmedicamentos.adapter.web.usuario.CadastrarUsuarioRequest;
-import fiap.msmedicamentos.adapter.web.usuario.UsuarioResponse;
-import fiap.msmedicamentos.adapter.web.usuario.UsuarioWebMapper;
 import fiap.msmedicamentos.core.usuario.entity.Usuario;
 import fiap.msmedicamentos.core.usuario.enums.PapelUsuario;
 import fiap.msmedicamentos.core.usuario.exception.UsuarioNaoEncontradoException;
@@ -60,26 +57,24 @@ class UsuarioControllerTest {
     @MockBean
     private UsuarioWebMapper mapper;
 
-        @Test
+    @Test
     void deveCadastrarUsuarioComSucesso() throws Exception {
         // Arrange
         CadastrarUsuarioRequest request = new CadastrarUsuarioRequest();
         request.setNome("João Silva");
         request.setEmail("joao@email.com");
-        request.setSenha("senha123");
-        request.setPapel(PapelUsuario.USUARIO);
-        request.setAtivo(true);
+        request.setPapel(PapelUsuario.MEDICO);
 
         Usuario usuarioDomain = new Usuario();
         usuarioDomain.setNome("João Silva");
         usuarioDomain.setEmail("joao@email.com");
-        usuarioDomain.setPapel(PapelUsuario.USUARIO);
+        usuarioDomain.setPapel(PapelUsuario.MEDICO);
 
         Usuario usuarioSalvo = new Usuario();
         usuarioSalvo.setId(1L);
         usuarioSalvo.setNome("João Silva");
         usuarioSalvo.setEmail("joao@email.com");
-        usuarioSalvo.setPapel(PapelUsuario.USUARIO);
+        usuarioSalvo.setPapel(PapelUsuario.MEDICO);
 
         UsuarioResponse response = new UsuarioResponse();
         response.setId(1L);

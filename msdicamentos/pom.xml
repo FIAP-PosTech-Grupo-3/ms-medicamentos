@@ -129,13 +129,35 @@
 					<excludes>
 						<!-- Excluir camada de banco de dados/infraestrutura -->
 						<exclude>**/adapter/database/**</exclude>
+						
 						<!-- Excluir configurações -->
 						<exclude>**/config/**</exclude>
+						
 						<!-- Excluir classe principal do Spring Boot -->
 						<exclude>**/*Application.class</exclude>
-						<!-- Excluir DTOs e entidades JPA se houver -->
+						
+						<!-- DTOs - Request/Response (só dados, sem lógica) -->
+						<exclude>**/*Request.class</exclude>
+						<exclude>**/*Response.class</exclude>
 						<exclude>**/dto/**</exclude>
+						
+						<!-- Entidades JPA (só annotations) -->
 						<exclude>**/entity/jpa/**</exclude>
+						<exclude>**/*Entity.class</exclude>
+						
+						<!-- Enums (valores constantes) -->
+						<exclude>**/enums/**</exclude>
+						
+						<!-- Mappers simples (só conversão A→B) -->
+						<exclude>**/*WebMapper.class</exclude>
+						<exclude>**/*Mapper.class</exclude>
+						
+						<!-- Exception classes (só construtores) -->
+						<exclude>**/exception/**Exception.class</exclude>
+						<exclude>**/exception/ErrorResponse.class</exclude>
+						
+						<!-- Classes geradas pelo Lombok -->
+						<exclude>**/*$*.class</exclude>
 					</excludes>
 				</configuration>
 				<executions>

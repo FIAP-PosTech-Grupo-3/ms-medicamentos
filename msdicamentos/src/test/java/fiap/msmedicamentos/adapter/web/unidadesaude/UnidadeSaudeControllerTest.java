@@ -23,7 +23,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.Arrays;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -177,5 +179,101 @@ class UnidadeSaudeControllerTest {
                 .andExpect(status().isNotFound());
 
         verify(deletarUnidadeSaudeUseCase).execute(unidadeId);
+    }
+
+    @Test
+    void deveAtualizarUnidadeSaudeComSucesso() throws Exception {
+        // Arrange
+        Long unidadeId = 1L;
+        UnidadeSaudeRequest request = new UnidadeSaudeRequest();
+        request.setNome("UBS Central Atualizada");
+        request.setEndereco("Avenida Central, 100");
+        request.setAtiva(true);
+
+        UnidadeSaude unidadeSaudeAtualizada = new UnidadeSaude();
+        unidadeSaudeAtualizada.setId(unidadeId);
+        unidadeSaudeAtualizada.setNome(request.getNome());
+
+        UnidadeSaudeResponse response = new UnidadeSaudeResponse();
+        response.setId(unidadeId);
+        response.setNome(request.getNome());
+
+        when(mapper.toDomain(any(UnidadeSaudeRequest.class))).thenReturn(unidadeSaudeAtualizada);
+        when(atualizarUnidadeSaudeUseCase.execute(eq(unidadeId), any(UnidadeSaude.class)))
+                .thenReturn(unidadeSaudeAtualizada);
+        when(mapper.toResponse(unidadeSaudeAtualizada)).thenReturn(response);
+
+        // Act & Assert
+        mockMvc.perform(put("/api/unidades-saude/{id}", unidadeId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(unidadeId))
+                .andExpect(jsonPath("$.nome").value(request.getNome()));
+
+        verify(atualizarUnidadeSaudeUseCase).execute(eq(unidadeId), any(UnidadeSaude.class));
+        verify(mapper).toResponse(unidadeSaudeAtualizada);
+    }
+
+    @Test
+    void deveRetornar404AoAtualizarUnidadeSaudeInexistente() throws Exception {
+        // Arrange
+        Long unidadeId = 999L;
+        UnidadeSaudeRequest request = new UnidadeSaudeRequest();
+        request.setNome("UBS Inexistente");
+        request.setEndereco("Rua das Flores, 123");
+
+        UnidadeSaude unidadeSaude = new UnidadeSaude();
+        when(mapper.toDomain(any(UnidadeSaudeRequest.class))).thenReturn(unidadeSaude);
+        
+        doThrow(new UnidadeSaudeNaoEncontradaException("Unidade de saúde não encontrada"))
+                .when(atualizarUnidadeSaudeUseCase).execute(eq(unidadeId), any(UnidadeSaude.class));
+
+        // Act & Assert
+        mockMvc.perform(put("/api/unidades-saude/{id}", unidadeId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isNotFound());
+
+        verify(atualizarUnidadeSaudeUseCase).execute(eq(unidadeId), any(UnidadeSaude.class));
+    }
+
+    @Test
+    void deveRetornar400AoAtualizarUnidadeSaudeComDadosInvalidos() throws Exception {
+        // Arrange
+        Long unidadeId = 1L;
+        UnidadeSaudeRequest request = new UnidadeSaudeRequest();
+        // Request sem nome (inválido)
+
+        // Act & Assert
+        mockMvc.perform(put("/api/unidades-saude/{id}", unidadeId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest());
+
+        verify(atualizarUnidadeSaudeUseCase, never()).execute(any(), any());
+    }
+
+    @Test
+    void deveBuscarUnidadesSaudePorNomeComSucesso() throws Exception {
+        // Arrange
+        String nome = "Central";
+        UnidadeSaude unidade1 = new UnidadeSaude(1L, "UBS Central", "Rua A, 123", true);
+        UnidadeSaude unidade2 = new UnidadeSaude(2L, "Hospital Central", "Rua B, 456", true);
+        
+        Page<UnidadeSaude> page = new PageImpl<>(Arrays.asList(unidade1, unidade2), PageRequest.of(0, 10), 2);
+
+        when(buscarUnidadeSaudePorNomeUseCase.execute(eq(nome), any(PageRequest.class))).thenReturn(page);
+
+        // Act & Assert
+        mockMvc.perform(get("/api/unidades-saude/buscar")
+                        .param("nome", nome)
+                        .param("page", "0")
+                        .param("size", "10"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content").isArray())
+                .andExpect(jsonPath("$.totalElements").value(2));
+
+        verify(buscarUnidadeSaudePorNomeUseCase).execute(eq(nome), any(PageRequest.class));
     }
 }

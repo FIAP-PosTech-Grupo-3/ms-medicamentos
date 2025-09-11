@@ -109,4 +109,34 @@ class MedicamentoTest {
         // Act & Assert
         assertTrue(medicamento.isValido());
     }
+
+    @Test
+    void deveSerInvalidoComNomeApenasBranco() {
+        // Arrange
+        Medicamento medicamento = new Medicamento(
+            1L,
+            "   ",
+            "Paracetamol",
+            "EMS",
+            "500mg"
+        );
+
+        // Act & Assert
+        assertFalse(medicamento.isValido());
+    }
+
+    @Test
+    void deveSerInvalidoComPrincipioAtivoApenasBranco() {
+        // Arrange
+        Medicamento medicamento = new Medicamento(
+            1L,
+            "Paracetamol",
+            "   ",
+            "EMS",
+            "500mg"
+        );
+
+        // Act & Assert
+        assertFalse(medicamento.isValido());
+    }
 }

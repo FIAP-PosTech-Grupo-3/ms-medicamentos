@@ -21,6 +21,7 @@ import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -174,5 +175,112 @@ class EstoqueControllerTest {
                 .andExpect(status().isNotFound());
 
         verify(consultarEstoqueUseCase).buscarPorMedicamento(medicamentoId);
+    }
+
+    @Test
+    void deveAtualizarEstoqueComSucesso() throws Exception {
+        // Arrange
+        AtualizarEstoqueRequest request = new AtualizarEstoqueRequest();
+        request.setMedicamentoId(1L);
+        request.setUnidadeSaudeId(1L);
+        request.setQuantidade(75);
+        request.setQuantidadeMinima(15);
+
+        EstoqueMedicamento estoque = new EstoqueMedicamento(1L, 1L, 1L, 75, 15);
+        EstoqueResponse response = new EstoqueResponse();
+        response.setId(1L);
+        response.setMedicamentoId(1L);
+        response.setUnidadeSaudeId(1L);
+        response.setQuantidade(75);
+        response.setQuantidadeMinima(15);
+
+        when(atualizarEstoqueUseCase.execute(1L, 1L, 75, 15)).thenReturn(estoque);
+        when(mapper.toResponse(estoque)).thenReturn(response);
+
+        // Act & Assert
+        mockMvc.perform(put("/api/estoque/atualizar")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1L))
+                .andExpect(jsonPath("$.medicamentoId").value(1L))
+                .andExpect(jsonPath("$.quantidade").value(75))
+                .andExpect(jsonPath("$.quantidadeMinima").value(15));
+
+        verify(atualizarEstoqueUseCase).execute(1L, 1L, 75, 15);
+        verify(mapper).toResponse(estoque);
+    }
+
+    @Test
+    void deveConsultarEstoquePorUnidadeSaude() throws Exception {
+        // Arrange
+        Long unidadeSaudeId = 1L;
+        EstoqueMedicamento estoque1 = new EstoqueMedicamento(1L, 1L, unidadeSaudeId, 100, 20);
+        EstoqueMedicamento estoque2 = new EstoqueMedicamento(2L, 2L, unidadeSaudeId, 50, 10);
+        
+        List<EstoqueMedicamento> estoques = Arrays.asList(estoque1, estoque2);
+
+        when(consultarEstoqueUseCase.buscarPorUnidadeSaude(unidadeSaudeId)).thenReturn(estoques);
+
+        // Act & Assert
+        mockMvc.perform(get("/api/estoque/unidade/{unidadeSaudeId}", unidadeSaudeId))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$.length()").value(2));
+
+        verify(consultarEstoqueUseCase).buscarPorUnidadeSaude(unidadeSaudeId);
+    }
+
+    @Test
+    void deveConsultarEstoqueBaixo() throws Exception {
+        // Arrange
+        EstoqueMedicamento estoque1 = new EstoqueMedicamento(1L, 1L, 1L, 5, 10); // Baixo estoque
+        EstoqueMedicamento estoque2 = new EstoqueMedicamento(2L, 2L, 1L, 3, 10); // Baixo estoque
+        
+        List<EstoqueMedicamento> estoquesBaixos = Arrays.asList(estoque1, estoque2);
+
+        when(consultarEstoqueUseCase.buscarEstoqueBaixo()).thenReturn(estoquesBaixos);
+
+        // Act & Assert
+        mockMvc.perform(get("/api/estoque/baixo"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$.length()").value(2));
+
+        verify(consultarEstoqueUseCase).buscarEstoqueBaixo();
+    }
+
+    @Test
+    void deveRetornar400AoAdicionarEstoqueComDadosInvalidos() throws Exception {
+        // Arrange
+        MovimentarEstoqueRequest request = new MovimentarEstoqueRequest();
+        // Request sem medicamentoId (inválido)
+        request.setUnidadeSaudeId(1L);
+        request.setQuantidade(50);
+
+        // Act & Assert
+        mockMvc.perform(post("/api/estoque/adicionar")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest());
+
+        verify(adicionarEstoqueUseCase, never()).execute(any(), any(), any());
+    }
+
+    @Test
+    void deveRetornar400AoRemoverEstoqueComQuantidadeNegativa() throws Exception {
+        // Arrange
+        MovimentarEstoqueRequest request = new MovimentarEstoqueRequest();
+        request.setMedicamentoId(1L);
+        request.setUnidadeSaudeId(1L);
+        request.setQuantidade(-10); // Quantidade negativa
+
+        // Act & Assert
+        mockMvc.perform(post("/api/estoque/remover")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest());
+
+        verify(removerEstoqueUseCase, never()).execute(any(), any(), any());
     }
 }
