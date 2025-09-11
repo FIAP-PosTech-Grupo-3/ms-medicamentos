@@ -27,4 +27,10 @@ public class EstoqueMedicamentoEntity {
     
     @Column(name = "quantidade_minima")
     private Integer quantidadeMinima;
+    
+    @Column(name = "created_at")
+    private java.time.LocalDateTime createdAt;
+    
+    @Column(name = "updated_at")
+    private java.time.LocalDateTime updatedAt;
 }

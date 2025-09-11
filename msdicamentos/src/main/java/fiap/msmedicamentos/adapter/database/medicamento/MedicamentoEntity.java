@@ -29,6 +29,12 @@ public class MedicamentoEntity {
     
     private String dosagem;
     
+    @Column(name = "created_at")
+    private java.time.LocalDateTime createdAt;
+    
+    @Column(name = "updated_at")
+    private java.time.LocalDateTime updatedAt;
+    
     @OneToMany(mappedBy = "medicamentoId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<EstoqueMedicamentoEntity> estoques;
 }

@@ -1,410 +1,415 @@
-####################
-# MEDICAMENTOS
-####################
+@baseUrl = http://localhost:8080
+@contentType = application/json
 
-### Cadastrar Medicamento - Sucesso
-POST http://localhost:8080/api/medicamentos
-Content-Type: application/json
+###############################################################################
+# MEDICAMENTOS
+###############################################################################
+
+### 1. Listar todos os medicamentos (com paginação)
+GET {{baseUrl}}/api/medicamentos
+Accept: {{contentType}}
+
+###
+
+### 2. Buscar medicamento por ID - Sucesso
+GET {{baseUrl}}/api/medicamentos/1
+Accept: {{contentType}}
+
+###
+
+### 3. Buscar medicamento por ID - Não encontrado (404)
+GET {{baseUrl}}/api/medicamentos/999
+Accept: {{contentType}}
+
+###
+
+### 4. Cadastrar medicamento - Sucesso
+POST {{baseUrl}}/api/medicamentos
+Content-Type: {{contentType}}
 
 {
   "nome": "Paracetamol",
-  "tipo": "ANALGESICO",
-  "fabricante": "EMS",
-  "dataValidade": "2025-12-31",
-  "dosagem": "500mg",
-  "formaFarmaceutica": "COMPRIMIDO",
   "principioAtivo": "Paracetamol",
-  "lote": "LOT123456",
-  "dataFabricacao": "2024-01-15",
-  "precisaReceita": false
+  "fabricante": "EMS",
+  "dosagem": "500mg"
 }
 
 ###
 
-### Cadastrar Medicamento - Erro: Nome vazio (400 Bad Request)
-POST http://localhost:8080/api/medicamentos
-Content-Type: application/json
+### 5. Cadastrar medicamento - Erro: Nome vazio (400)
+POST {{baseUrl}}/api/medicamentos
+Content-Type: {{contentType}}
 
 {
   "nome": "",
-  "tipo": "ANALGESICO",
-  "fabricante": "EMS"
+  "principioAtivo": "Paracetamol",
+  "fabricante": "EMS",
+  "dosagem": "500mg"
 }
 
 ###
 
-### Cadastrar Medicamento - Erro: Tipo null (400 Bad Request)
-POST http://localhost:8080/api/medicamentos
-Content-Type: application/json
+### 6. Cadastrar medicamento - Erro: Nome null (400)
+POST {{baseUrl}}/api/medicamentos
+Content-Type: {{contentType}}
 
 {
-  "nome": "Dipirona",
-  "fabricante": "Neo Química"
+  "principioAtivo": "Paracetamol",
+  "fabricante": "EMS",
+  "dosagem": "500mg"
 }
 
 ###
 
-### Cadastrar Medicamento com Receita
-POST http://localhost:8080/api/medicamentos
-Content-Type: application/json
-
-{
-  "nome": "Amoxicilina",
-  "tipo": "ANTIBIOTICO",
-  "fabricante": "Medley",
-  "dataValidade": "2026-06-30",
-  "dosagem": "875mg",
-  "formaFarmaceutica": "COMPRIMIDO",
-  "principioAtivo": "Amoxicilina",
-  "lote": "AMX789",
-  "dataFabricacao": "2024-03-10",
-  "precisaReceita": true
-}
-
-###
-
-### Buscar Medicamento por ID
-GET http://localhost:8080/api/medicamentos/1
-
-###
-
-### Buscar Medicamento por ID - Não encontrado (404)
-GET http://localhost:8080/api/medicamentos/999
-
-###
-
-### Buscar Todos os Medicamentos - Primeira página
-GET http://localhost:8080/api/medicamentos
-
-###
-
-### Buscar Todos os Medicamentos - Com paginação personalizada
-GET http://localhost:8080/api/medicamentos?page=0&size=5&sortBy=nome&sortDirection=ASC
-
-###
-
-### Buscar Todos os Medicamentos - Ordenado por data de validade
-GET http://localhost:8080/api/medicamentos?page=0&size=10&sortBy=dataValidade&sortDirection=DESC
-
-###
-
-### Buscar Medicamentos por Nome - "Paracetamol"
-GET http://localhost:8080/api/medicamentos/buscar?nome=Paracetamol
-
-###
-
-### Buscar Medicamentos por Nome - Busca parcial "para"
-GET http://localhost:8080/api/medicamentos/buscar?nome=para&page=0&size=10
-
-###
-
-### Buscar Medicamentos por Nome - Com paginação
-GET http://localhost:8080/api/medicamentos/buscar?nome=a&page=0&size=5&sortBy=nome&sortDirection=ASC
-
-###
-
-### Buscar Medicamentos por Nome - Nome vazio (400 Bad Request)
-GET http://localhost:8080/api/medicamentos/buscar?nome=
-
-###
-
-### Atualizar Medicamento - Sucesso
-PUT http://localhost:8080/api/medicamentos/1
-Content-Type: application/json
+### 7. Atualizar medicamento - Sucesso
+PUT {{baseUrl}}/api/medicamentos/1
+Content-Type: {{contentType}}
 
 {
   "nome": "Paracetamol 750mg",
-  "tipo": "ANALGESICO",
-  "fabricante": "EMS Pharma",
-  "dataValidade": "2025-12-31",
-  "dosagem": "750mg",
-  "formaFarmaceutica": "COMPRIMIDO",
   "principioAtivo": "Paracetamol",
-  "lote": "LOT123456-NEW",
-  "dataFabricacao": "2024-01-15",
-  "precisaReceita": false
+  "fabricante": "EMS",
+  "dosagem": "750mg"
 }
 
 ###
 
-### Atualizar Medicamento - ID não encontrado (404)
-PUT http://localhost:8080/api/medicamentos/999
-Content-Type: application/json
+### 8. Atualizar medicamento - Erro: ID não encontrado (404)
+PUT {{baseUrl}}/api/medicamentos/999
+Content-Type: {{contentType}}
 
 {
   "nome": "Medicamento Inexistente",
-  "tipo": "ANALGESICO",
-  "fabricante": "Fabricante",
-  "dataValidade": "2025-12-31",
-  "dosagem": "500mg",
-  "formaFarmaceutica": "COMPRIMIDO",
-  "principioAtivo": "Princípio Ativo",
-  "lote": "LOT999",
-  "dataFabricacao": "2024-01-15",
-  "precisaReceita": false
+  "principioAtivo": "Teste",
+  "fabricante": "Teste",
+  "dosagem": "100mg"
 }
 
 ###
 
-### Atualizar Medicamento - Dados inválidos (400)
-PUT http://localhost:8080/api/medicamentos/1
-Content-Type: application/json
-
-{
-  "nome": "",
-  "tipo": "ANALGESICO",
-  "fabricante": "EMS"
-}
+### 9. Deletar medicamento - Sucesso
+DELETE {{baseUrl}}/api/medicamentos/1
+Accept: {{contentType}}
 
 ###
 
-### Deletar Medicamento - Sucesso (204)
-DELETE http://localhost:8080/api/medicamentos/1
+### 10. Deletar medicamento - Erro: ID não encontrado (404)
+DELETE {{baseUrl}}/api/medicamentos/999
+Accept: {{contentType}}
 
 ###
 
-### Deletar Medicamento - ID não encontrado (404)
-DELETE http://localhost:8080/api/medicamentos/999
+### 11. Buscar medicamentos por nome com paginação
+GET {{baseUrl}}/api/medicamentos/buscar?nome=paracetamol&page=0&size=10&sort=nome&direction=ASC
+Accept: {{contentType}}
 
 ###
 
-####################
-# UNIDADES DE SAÚDE
-####################
+### 12. Listar medicamentos com paginação e ordenação
+GET {{baseUrl}}/api/medicamentos?page=0&size=5&sort=nome&direction=ASC
+Accept: {{contentType}}
 
-### Cadastrar Unidade de Saúde - Sucesso
-POST http://localhost:8080/api/unidades-saude
-Content-Type: application/json
-
-{
-  "nome": "UBS Vila Esperança",
-  "endereco": "Rua das Flores, 123 - Vila Esperança - São Paulo/SP",
-  "telefone": "(11) 3456-7890",
-  "email": "ubs.vilaesperanca@saude.sp.gov.br",
-  "ativa": true
-}
-
-###
-
-### Cadastrar Hospital - Sucesso
-POST http://localhost:8080/api/unidades-saude
-Content-Type: application/json
-
-{
-  "nome": "Hospital das Clínicas",
-  "endereco": "Av. Dr. Enéas de Carvalho Aguiar, 255 - Cerqueira César - São Paulo/SP",
-  "telefone": "(11) 2661-0000",
-  "email": "contato@hc.fm.usp.br",
-  "ativa": true
-}
-
-###
-
-### Cadastrar Unidade de Saúde - Erro: Nome vazio (400 Bad Request)
-POST http://localhost:8080/api/unidades-saude
-Content-Type: application/json
-
-{
-  "nome": "",
-  "endereco": "Rua das Flores, 123"
-}
-
-###
-
-### Cadastrar Unidade de Saúde - Erro: Nome muito curto (400 Bad Request)
-POST http://localhost:8080/api/unidades-saude
-Content-Type: application/json
-
-{
-  "nome": "UB",
-  "endereco": "Rua das Flores, 123"
-}
-
-###
-
-### Buscar Unidade de Saúde por ID - Sucesso
-GET http://localhost:8080/api/unidades-saude/1
-
-###
-
-### Buscar Unidade de Saúde por ID - Não encontrada (404)
-GET http://localhost:8080/api/unidades-saude/999
-
-###
-
-### Listar todas as Unidades de Saúde - Primeira página
-GET http://localhost:8080/api/unidades-saude?page=0&size=10&sort=nome&direction=asc
-
-###
-
-### Buscar Unidades de Saúde por nome
-GET http://localhost:8080/api/unidades-saude/buscar?nome=Vila&page=0&size=10
-
-###
-
-### Atualizar Unidade de Saúde - Sucesso
-PUT http://localhost:8080/api/unidades-saude/1
-Content-Type: application/json
-
-{
-  "nome": "UBS Vila Esperança - Atualizada",
-  "endereco": "Rua das Flores, 123 - Vila Esperança - São Paulo/SP - CEP: 12345-000",
-  "telefone": "(11) 3456-7890",
-  "email": "ubs.vilaesperanca.nova@saude.sp.gov.br",
-  "ativa": true
-}
-
-###
-
-### Atualizar Unidade de Saúde - ID não encontrado (404)
-PUT http://localhost:8080/api/unidades-saude/999
-Content-Type: application/json
-
-{
-  "nome": "UBS Inexistente",
-  "endereco": "Rua Inexistente, 999"
-}
-
-###
-
-### Deletar Unidade de Saúde - Sucesso (204)
-DELETE http://localhost:8080/api/unidades-saude/1
-
-###
-
-### Deletar Unidade de Saúde - ID não encontrado (404)
-DELETE http://localhost:8080/api/unidades-saude/999
-
-###
-
-####################
+###############################################################################
 # USUÁRIOS
-####################
+###############################################################################
 
-### Cadastrar usuário ADMIN - Sucesso (201)
-POST http://localhost:8080/api/usuarios
-Content-Type: application/json
-
-{
-  "nome": "Admin Teste",
-  "email": "admin.teste@email.com",
-  "senha": "admin123",
-  "papel": "ADMIN",
-  "ativo": true
-}
+### 13. Listar todos os usuários (com paginação)
+GET {{baseUrl}}/api/usuarios
+Accept: {{contentType}}
 
 ###
 
-### Cadastrar usuário comum - Sucesso (201)
-POST http://localhost:8080/api/usuarios
-Content-Type: application/json
+### 14. Buscar usuário por ID - Sucesso
+GET {{baseUrl}}/api/usuarios/1
+Accept: {{contentType}}
+
+###
+
+### 15. Buscar usuário por ID - Não encontrado (404)
+GET {{baseUrl}}/api/usuarios/999
+Accept: {{contentType}}
+
+###
+
+### 16. Cadastrar usuário - Sucesso
+POST {{baseUrl}}/api/usuarios
+Content-Type: {{contentType}}
 
 {
-  "nome": "Usuario Comum",
-  "email": "usuario.comum@email.com", 
-  "senha": "usuario123",
+  "nome": "João Silva",
+  "email": "joao.silva@exemplo.com",
+  "senha": "senha123",
   "papel": "USUARIO",
   "ativo": true
 }
 
 ###
 
-### Listar todos os usuários - Sucesso (200)
-GET http://localhost:8080/api/usuarios?page=0&size=10&sort=nome&direction=asc
-
-###
-
-### Buscar usuário por ID - Sucesso (200)
-GET http://localhost:8080/api/usuarios/1
-
-###
-
-### Buscar usuário por ID - Não encontrado (404)
-GET http://localhost:8080/api/usuarios/999
-
-###
-
-### Buscar usuários por nome - Sucesso (200)
-GET http://localhost:8080/api/usuarios/buscar?nome=Admin&page=0&size=10
-
-###
-
-### Listar apenas usuários ativos - Sucesso (200)
-GET http://localhost:8080/api/usuarios/ativos?page=0&size=10
-
-###
-
-### Atualizar usuário - Sucesso (200)
-PUT http://localhost:8080/api/usuarios/1
-Content-Type: application/json
+### 17. Cadastrar usuário - Erro: Email duplicado (409)
+POST {{baseUrl}}/api/usuarios
+Content-Type: {{contentType}}
 
 {
-  "nome": "Admin Atualizado",
-  "email": "admin.atualizado@email.com",
-  "papel": "ADMIN",
-  "ativo": true
-}
-
-###
-
-### Atualizar usuário - ID não encontrado (404)
-PUT http://localhost:8080/api/usuarios/999
-Content-Type: application/json
-
-{
-  "nome": "Usuario Inexistente",
-  "email": "inexistente@email.com",
+  "nome": "Pedro Santos",
+  "email": "joao.silva@exemplo.com",
+  "senha": "senha456",
   "papel": "USUARIO",
   "ativo": true
 }
 
 ###
 
-### Deletar usuário - Sucesso (204)
-DELETE http://localhost:8080/api/usuarios/2
-
-###
-
-### Deletar usuário - ID não encontrado (404)
-DELETE http://localhost:8080/api/usuarios/999
-
-###
-
-### Cadastrar usuário - Erro: Nome vazio (400 Bad Request)
-POST http://localhost:8080/api/usuarios
-Content-Type: application/json
+### 18. Cadastrar usuário - Erro: Dados inválidos (400)
+POST {{baseUrl}}/api/usuarios
+Content-Type: {{contentType}}
 
 {
   "nome": "",
-  "email": "email@teste.com",
-  "senha": "senha123",
-  "papel": "ADMIN"
-}
-
-###
-
-### Cadastrar usuário - Erro: Email inválido (400 Bad Request)
-POST http://localhost:8080/api/usuarios
-Content-Type: application/json
-
-{
-  "nome": "Teste",
   "email": "email-invalido",
-  "senha": "senha123",
-  "papel": "ADMIN"
+  "senha": "",
+  "papel": "PAPEL_INEXISTENTE",
+  "ativo": true
 }
 
 ###
 
-### Cadastrar usuário - Erro: Email duplicado (409 Conflict)
-POST http://localhost:8080/api/usuarios
-Content-Type: application/json
+### 19. Atualizar usuário - Sucesso
+PUT {{baseUrl}}/api/usuarios/1
+Content-Type: {{contentType}}
 
 {
-  "nome": "Teste Duplicado",
-  "email": "admin@medicamentos.com",
-  "senha": "senha123",
-  "papel": "USUARIO"
+  "nome": "João Silva Santos",
+  "email": "joao.santos@exemplo.com",
+  "senha": "novaSenha123",
+  "papel": "ADMIN",
+  "ativo": true
 }
 
 ###
+
+### 20. Deletar usuário - Sucesso
+DELETE {{baseUrl}}/api/usuarios/1
+Accept: {{contentType}}
+
+###
+
+### 21. Deletar usuário - Erro: ID não encontrado (404)
+DELETE {{baseUrl}}/api/usuarios/999
+Accept: {{contentType}}
+
+###############################################################################
+# UNIDADES DE SAÚDE
+###############################################################################
+
+### 22. Listar todas as unidades de saúde (com paginação)
+GET {{baseUrl}}/api/unidades-saude
+Accept: {{contentType}}
+
+###
+
+### 23. Buscar unidade de saúde por ID - Sucesso
+GET {{baseUrl}}/api/unidades-saude/1
+Accept: {{contentType}}
+
+###
+
+### 24. Buscar unidade de saúde por ID - Não encontrado (404)
+GET {{baseUrl}}/api/unidades-saude/999
+Accept: {{contentType}}
+
+###
+
+### 25. Cadastrar unidade de saúde - Sucesso
+POST {{baseUrl}}/api/unidades-saude
+Content-Type: {{contentType}}
+
+{
+  "nome": "UBS Vila Nova",
+  "endereco": "Rua das Flores, 123 - Vila Nova",
+  "ativa": true
+}
+
+###
+
+### 26. Cadastrar unidade de saúde - Erro: Dados inválidos (400)
+POST {{baseUrl}}/api/unidades-saude
+Content-Type: {{contentType}}
+
+{
+  "nome": "",
+  "endereco": "",
+  "ativa": true
+}
+
+###
+
+### 27. Atualizar unidade de saúde - Sucesso
+PUT {{baseUrl}}/api/unidades-saude/1
+Content-Type: {{contentType}}
+
+{
+  "nome": "UBS Vila Nova Atualizada",
+  "endereco": "Rua das Flores, 456 - Vila Nova",
+  "ativa": false
+}
+
+###
+
+### 28. Deletar unidade de saúde - Sucesso
+DELETE {{baseUrl}}/api/unidades-saude/1
+Accept: {{contentType}}
+
+###
+
+### 29. Deletar unidade de saúde - Erro: ID não encontrado (404)
+DELETE {{baseUrl}}/api/unidades-saude/999
+Accept: {{contentType}}
+
+###############################################################################
+# ESTOQUE
+###############################################################################
+
+### 30. Consultar todo o estoque (com paginação)
+GET {{baseUrl}}/api/estoque
+Accept: {{contentType}}
+
+###
+
+### 31. Consultar estoque por medicamento ID - Sucesso
+GET {{baseUrl}}/api/estoque/medicamento/1
+Accept: {{contentType}}
+
+###
+
+### 32. Consultar estoque por medicamento ID - Não encontrado (404)
+GET {{baseUrl}}/api/estoque/medicamento/999
+Accept: {{contentType}}
+
+###
+
+### 33. Adicionar estoque - Sucesso
+POST {{baseUrl}}/api/estoque/adicionar
+Content-Type: {{contentType}}
+
+{
+  "medicamentoId": 1,
+  "unidadeSaudeId": 1,
+  "quantidade": 50
+}
+
+###
+
+### 34. Adicionar estoque - Erro: Quantidade inválida (400)
+POST {{baseUrl}}/api/estoque/adicionar
+Content-Type: {{contentType}}
+
+{
+  "medicamentoId": 1,
+  "unidadeSaudeId": 1,
+  "quantidade": -10
+}
+
+###
+
+### 35. Adicionar estoque - Erro: Medicamento não encontrado (404)
+POST {{baseUrl}}/api/estoque/adicionar
+Content-Type: {{contentType}}
+
+{
+  "medicamentoId": 999,
+  "unidadeSaudeId": 1,
+  "quantidade": 50
+}
+
+###
+
+### 36. Remover estoque - Sucesso
+POST {{baseUrl}}/api/estoque/remover
+Content-Type: {{contentType}}
+
+{
+  "medicamentoId": 1,
+  "unidadeSaudeId": 1,
+  "quantidade": 20
+}
+
+###
+
+### 37. Remover estoque - Erro: Quantidade maior que disponível (400)
+POST {{baseUrl}}/api/estoque/remover
+Content-Type: {{contentType}}
+
+{
+  "medicamentoId": 1,
+  "unidadeSaudeId": 1,
+  "quantidade": 1000
+}
+
+###
+
+### 38. Listar estoque com paginação e ordenação
+GET {{baseUrl}}/api/estoque?page=0&size=10&sort=quantidade&direction=DESC
+Accept: {{contentType}}
+
+###############################################################################
+# TESTES ADICIONAIS DE VALIDAÇÃO
+###############################################################################
+
+### 39. Teste de conectividade - Health Check
+GET {{baseUrl}}/actuator/health
+Accept: {{contentType}}
+
+###
+
+### 40. Teste de documentação - Swagger UI
+GET {{baseUrl}}/swagger-ui/index.html
+Accept: text/html
+
+###############################################################################
+# CENÁRIOS DE TESTE INTEGRADO
+###############################################################################
+
+### CENÁRIO 1: Fluxo completo de medicamento
+# 1. Cadastrar medicamento
+POST {{baseUrl}}/api/medicamentos
+Content-Type: {{contentType}}
+
+{
+  "nome": "Dipirona Teste",
+  "principioAtivo": "Dipirona Sódica",
+  "fabricante": "Neo Química",
+  "dosagem": "500mg"
+}
+
+### 
+# 2. Buscar o medicamento criado
+GET {{baseUrl}}/api/medicamentos/2
+Accept: {{contentType}}
+
+###
+# 3. Atualizar o medicamento
+PUT {{baseUrl}}/api/medicamentos/2
+Content-Type: {{contentType}}
+
+{
+  "nome": "Dipirona Teste Atualizada",
+  "principioAtivo": "Dipirona Sódica",
+  "fabricante": "EMS",
+  "dosagem": "1000mg"
+}
+
+###############################################################################
+# VARIÁVEIS PARA TESTES
+# Descomente as linhas abaixo para usar ambiente de produção
+###############################################################################
+
+# @baseUrl = https://api.medicamentos.com
+# @contentType = application/json
+
+###############################################################################
+# NOTAS:
+# - Use Ctrl+Alt+R (ou Cmd+Alt+R no Mac) para executar requisições
+# - Separe requisições com ### 
+# - Use {{variavel}} para interpolação de variáveis
+# - Pressione F1 > "Rest Client: Send Request" para executar
+###############################################################################

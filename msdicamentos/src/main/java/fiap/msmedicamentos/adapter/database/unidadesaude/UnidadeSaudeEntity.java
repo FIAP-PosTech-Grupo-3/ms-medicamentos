@@ -27,6 +27,12 @@ public class UnidadeSaudeEntity {
     
     private Boolean ativa;
     
+    @Column(name = "created_at")
+    private java.time.LocalDateTime createdAt;
+    
+    @Column(name = "updated_at")
+    private java.time.LocalDateTime updatedAt;
+    
     @OneToMany(mappedBy = "unidadeSaudeId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<EstoqueMedicamentoEntity> estoques;
 }

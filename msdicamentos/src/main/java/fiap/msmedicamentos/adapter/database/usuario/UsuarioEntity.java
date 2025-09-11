@@ -31,4 +31,7 @@ public class UsuarioEntity {
     
     @Column(nullable = false)
     private Boolean ativo;
+    
+    @Column(name = "data_criacao")
+    private java.time.LocalDateTime dataCriacao;
 }
