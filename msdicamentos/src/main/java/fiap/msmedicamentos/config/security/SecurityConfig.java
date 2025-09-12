@@ -29,9 +29,11 @@ public class SecurityConfig {
             .authorizeHttpRequests(authz -> authz
                 // Swagger público
                 .requestMatchers("/", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                // Criação de usuário público
+                .requestMatchers(HttpMethod.POST, "/api/usuarios").permitAll()
                 // GET - todos autenticados
                 .requestMatchers(HttpMethod.GET, "/api/**").hasAnyRole("ADMIN", "USUARIO")
-                // POST/PUT/DELETE - só admin
+                // POST/PUT/DELETE - só admin (exceto criação de usuário)
                 .requestMatchers(HttpMethod.POST, "/api/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.PUT, "/api/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/api/**").hasRole("ADMIN")
