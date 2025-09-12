@@ -31,9 +31,11 @@ public class SecurityConfig {
                 .requestMatchers("/", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                 // Criação de usuário público
                 .requestMatchers(HttpMethod.POST, "/api/usuarios").permitAll()
-                // GET - todos autenticados
-                .requestMatchers(HttpMethod.GET, "/api/**").hasAnyRole("ADMIN", "USUARIO")
-                // POST/PUT/DELETE - só admin (exceto criação de usuário)
+                // Consultas (GET) de medicamentos, unidades e estoque públicas
+                .requestMatchers(HttpMethod.GET, "/api/medicamentos/**", "/api/unidades-saude/**", "/api/estoque/**").permitAll()
+                // GET de usuários continua protegido
+                .requestMatchers(HttpMethod.GET, "/api/usuarios/**").hasAnyRole("ADMIN", "USUARIO")
+                // POST/PUT/DELETE - só admin (exceto criação de usuário que já foi permitida)
                 .requestMatchers(HttpMethod.POST, "/api/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.PUT, "/api/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/api/**").hasRole("ADMIN")

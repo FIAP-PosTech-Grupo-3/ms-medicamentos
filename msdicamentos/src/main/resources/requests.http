@@ -110,12 +110,11 @@ Accept: {{contentType}}
 ###
 
 ###############################################################################
-# MEDICAMENTOS (PROTEGIDO)
+# MEDICAMENTOS (Consulta Pública, Modificação Protegida)
 ###############################################################################
 
-### 11. Listar todos os medicamentos (Protegido)
+### 11. Listar todos os medicamentos (Público)
 GET {{baseUrl}}/api/medicamentos
-Authorization: {{adminAuth}}
 Accept: {{contentType}}
 
 ###
@@ -149,12 +148,11 @@ Content-Type: {{contentType}}
 ###
 
 ###############################################################################
-# UNIDADES DE SAÚDE (PROTEGIDO)
+# UNIDADES DE SAÚDE (Consulta Pública, Modificação Protegida)
 ###############################################################################
 
-### 14. Listar todas as unidades de saúde (Protegido)
+### 14. Listar todas as unidades de saúde (Público)
 GET {{baseUrl}}/api/unidades-saude
-Authorization: {{adminAuth}}
 Accept: {{contentType}}
 
 ###
@@ -173,7 +171,7 @@ Content-Type: {{contentType}}
 ###
 
 ###############################################################################
-# ESTOQUE (PROTEGIDO)
+# ESTOQUE (Consulta Pública, Modificação Protegida)
 ###############################################################################
 
 ### 16. Adicionar estoque - SUCESSO (Protegido - ADMIN)
@@ -203,9 +201,8 @@ Content-Type: {{contentType}}
 
 ###
 
-### 18. Consultar todo o estoque (Protegido)
+### 18. Consultar todo o estoque (Público)
 GET {{baseUrl}}/api/estoque
-Authorization: {{adminAuth}}
 Accept: {{contentType}}
 
 ###
