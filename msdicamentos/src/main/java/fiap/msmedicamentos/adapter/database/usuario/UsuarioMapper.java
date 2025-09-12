@@ -19,6 +19,7 @@ public class UsuarioMapper {
         entity.setSenha(usuario.getSenha());
         entity.setPapel(toPapelEntity(usuario.getPapel()));
         entity.setAtivo(usuario.getAtivo());
+        entity.setDataCriacao(usuario.getDataCriacao());
         
         return entity;
     }
@@ -35,6 +36,7 @@ public class UsuarioMapper {
         usuario.setSenha(entity.getSenha());
         usuario.setPapel(toPapelDomain(entity.getPapel()));
         usuario.setAtivo(entity.getAtivo());
+        usuario.setDataCriacao(entity.getDataCriacao());
         
         return usuario;
     }

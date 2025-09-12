@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,6 +17,7 @@ public class Usuario {
     private String senha;
     private PapelUsuario papel;
     private Boolean ativo;
+    private LocalDateTime dataCriacao;
 
     public boolean isAtivo() {
         return ativo != null && ativo;

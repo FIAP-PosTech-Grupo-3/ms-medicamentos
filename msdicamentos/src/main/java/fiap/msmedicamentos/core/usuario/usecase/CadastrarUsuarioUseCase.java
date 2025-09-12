@@ -9,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -33,6 +35,7 @@ public class CadastrarUsuarioUseCase {
         
         // Configurações padrão para novo usuário
         usuario.setAtivo(true);
+        usuario.setDataCriacao(LocalDateTime.now());
         
         Usuario usuarioSalvo = usuarioGateway.salvar(usuario);
         log.info("Usuário cadastrado com ID: {}", usuarioSalvo.getId());
