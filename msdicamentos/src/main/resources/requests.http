@@ -1,415 +1,211 @@
 @baseUrl = http://localhost:8080
 @contentType = application/json
+@adminAuth = Basic admin admin
+@userAuth = Basic user user
 
 ###############################################################################
-# MEDICAMENTOS
+# USUÁRIOS (PUBLIC & PROTECTED)
 ###############################################################################
 
-### 1. Listar todos os medicamentos (com paginação)
-GET {{baseUrl}}/api/medicamentos
-Accept: {{contentType}}
-
-###
-
-### 2. Buscar medicamento por ID - Sucesso
-GET {{baseUrl}}/api/medicamentos/1
-Accept: {{contentType}}
-
-###
-
-### 3. Buscar medicamento por ID - Não encontrado (404)
-GET {{baseUrl}}/api/medicamentos/999
-Accept: {{contentType}}
-
-###
-
-### 4. Cadastrar medicamento - Sucesso
-POST {{baseUrl}}/api/medicamentos
+### 1. Cadastrar usuário - SUCESSO (Endpoint Público)
+# @name createUser
+POST {{baseUrl}}/api/usuarios
 Content-Type: {{contentType}}
 
 {
-  "nome": "Paracetamol",
-  "principioAtivo": "Paracetamol",
-  "fabricante": "EMS",
-  "dosagem": "500mg"
+  "nome": "Novo Usuário Teste",
+  "email": "novo.usuario@teste.com",
+  "senha": "senha123",
+  "papel": "USUARIO"
 }
 
 ###
 
-### 5. Cadastrar medicamento - Erro: Nome vazio (400)
-POST {{baseUrl}}/api/medicamentos
+### 2. Cadastrar usuário ADMIN - SUCESSO (Endpoint Público)
+POST {{baseUrl}}/api/usuarios
 Content-Type: {{contentType}}
 
 {
-  "nome": "",
-  "principioAtivo": "Paracetamol",
-  "fabricante": "EMS",
-  "dosagem": "500mg"
+  "nome": "Novo Admin Teste",
+  "email": "novo.admin@teste.com",
+  "senha": "admin123",
+  "papel": "ADMIN"
 }
 
 ###
 
-### 6. Cadastrar medicamento - Erro: Nome null (400)
-POST {{baseUrl}}/api/medicamentos
+### 3. Cadastrar usuário - ERRO: Papel inválido (500)
+POST {{baseUrl}}/api/usuarios
 Content-Type: {{contentType}}
 
 {
-  "principioAtivo": "Paracetamol",
-  "fabricante": "EMS",
-  "dosagem": "500mg"
+  "nome": "Usuário com Erro",
+  "email": "erro@teste.com",
+  "senha": "senha123",
+  "papel": "INVALIDO"
 }
 
 ###
 
-### 7. Atualizar medicamento - Sucesso
-PUT {{baseUrl}}/api/medicamentos/1
-Content-Type: {{contentType}}
-
-{
-  "nome": "Paracetamol 750mg",
-  "principioAtivo": "Paracetamol",
-  "fabricante": "EMS",
-  "dosagem": "750mg"
-}
-
-###
-
-### 8. Atualizar medicamento - Erro: ID não encontrado (404)
-PUT {{baseUrl}}/api/medicamentos/999
-Content-Type: {{contentType}}
-
-{
-  "nome": "Medicamento Inexistente",
-  "principioAtivo": "Teste",
-  "fabricante": "Teste",
-  "dosagem": "100mg"
-}
-
-###
-
-### 9. Deletar medicamento - Sucesso
-DELETE {{baseUrl}}/api/medicamentos/1
+### 4. Listar todos os usuários - SUCESSO (Protegido - ADMIN)
+GET {{baseUrl}}/api/usuarios
+Authorization: {{adminAuth}}
 Accept: {{contentType}}
 
 ###
 
-### 10. Deletar medicamento - Erro: ID não encontrado (404)
-DELETE {{baseUrl}}/api/medicamentos/999
+### 5. Listar todos os usuários - SUCESSO (Protegido - USUARIO)
+GET {{baseUrl}}/api/usuarios
+Authorization: {{userAuth}}
 Accept: {{contentType}}
 
 ###
 
-### 11. Buscar medicamentos por nome com paginação
-GET {{baseUrl}}/api/medicamentos/buscar?nome=paracetamol&page=0&size=10&sort=nome&direction=ASC
-Accept: {{contentType}}
-
-###
-
-### 12. Listar medicamentos com paginação e ordenação
-GET {{baseUrl}}/api/medicamentos?page=0&size=5&sort=nome&direction=ASC
-Accept: {{contentType}}
-
-###############################################################################
-# USUÁRIOS
-###############################################################################
-
-### 13. Listar todos os usuários (com paginação)
+### 6. Listar todos os usuários - ERRO: Sem autenticação (401)
 GET {{baseUrl}}/api/usuarios
 Accept: {{contentType}}
 
 ###
 
-### 14. Buscar usuário por ID - Sucesso
+### 7. Buscar usuário por ID - SUCESSO (Protegido)
 GET {{baseUrl}}/api/usuarios/1
+Authorization: {{adminAuth}}
 Accept: {{contentType}}
 
 ###
 
-### 15. Buscar usuário por ID - Não encontrado (404)
-GET {{baseUrl}}/api/usuarios/999
-Accept: {{contentType}}
-
-###
-
-### 16. Cadastrar usuário - Sucesso
-POST {{baseUrl}}/api/usuarios
-Content-Type: {{contentType}}
-
-{
-  "nome": "João Silva",
-  "email": "joao.silva@exemplo.com",
-  "senha": "senha123",
-  "papel": "USUARIO",
-  "ativo": true
-}
-
-###
-
-### 17. Cadastrar usuário - Erro: Email duplicado (409)
-POST {{baseUrl}}/api/usuarios
-Content-Type: {{contentType}}
-
-{
-  "nome": "Pedro Santos",
-  "email": "joao.silva@exemplo.com",
-  "senha": "senha456",
-  "papel": "USUARIO",
-  "ativo": true
-}
-
-###
-
-### 18. Cadastrar usuário - Erro: Dados inválidos (400)
-POST {{baseUrl}}/api/usuarios
-Content-Type: {{contentType}}
-
-{
-  "nome": "",
-  "email": "email-invalido",
-  "senha": "",
-  "papel": "PAPEL_INEXISTENTE",
-  "ativo": true
-}
-
-###
-
-### 19. Atualizar usuário - Sucesso
+### 8. Atualizar usuário - SUCESSO (Protegido - ADMIN)
 PUT {{baseUrl}}/api/usuarios/1
+Authorization: {{adminAuth}}
 Content-Type: {{contentType}}
 
 {
-  "nome": "João Silva Santos",
-  "email": "joao.santos@exemplo.com",
-  "senha": "novaSenha123",
+  "nome": "Administrador Atualizado",
+  "email": "admin",
   "papel": "ADMIN",
   "ativo": true
 }
 
 ###
 
-### 20. Deletar usuário - Sucesso
-DELETE {{baseUrl}}/api/usuarios/1
-Accept: {{contentType}}
-
-###
-
-### 21. Deletar usuário - Erro: ID não encontrado (404)
-DELETE {{baseUrl}}/api/usuarios/999
-Accept: {{contentType}}
-
-###############################################################################
-# UNIDADES DE SAÚDE
-###############################################################################
-
-### 22. Listar todas as unidades de saúde (com paginação)
-GET {{baseUrl}}/api/unidades-saude
-Accept: {{contentType}}
-
-###
-
-### 23. Buscar unidade de saúde por ID - Sucesso
-GET {{baseUrl}}/api/unidades-saude/1
-Accept: {{contentType}}
-
-###
-
-### 24. Buscar unidade de saúde por ID - Não encontrado (404)
-GET {{baseUrl}}/api/unidades-saude/999
-Accept: {{contentType}}
-
-###
-
-### 25. Cadastrar unidade de saúde - Sucesso
-POST {{baseUrl}}/api/unidades-saude
+### 9. Atualizar usuário - ERRO: Sem permissão (403 Forbidden - USUARIO)
+PUT {{baseUrl}}/api/usuarios/2
+Authorization: {{userAuth}}
 Content-Type: {{contentType}}
 
 {
-  "nome": "UBS Vila Nova",
-  "endereco": "Rua das Flores, 123 - Vila Nova",
-  "ativa": true
+  "nome": "Usuário Comum Tentando Atualizar",
+  "email": "user",
+  "papel": "USUARIO",
+  "ativo": false
 }
 
 ###
 
-### 26. Cadastrar unidade de saúde - Erro: Dados inválidos (400)
-POST {{baseUrl}}/api/unidades-saude
-Content-Type: {{contentType}}
-
-{
-  "nome": "",
-  "endereco": "",
-  "ativa": true
-}
-
-###
-
-### 27. Atualizar unidade de saúde - Sucesso
-PUT {{baseUrl}}/api/unidades-saude/1
-Content-Type: {{contentType}}
-
-{
-  "nome": "UBS Vila Nova Atualizada",
-  "endereco": "Rua das Flores, 456 - Vila Nova",
-  "ativa": false
-}
-
-###
-
-### 28. Deletar unidade de saúde - Sucesso
-DELETE {{baseUrl}}/api/unidades-saude/1
+### 10. Deletar usuário - SUCESSO (Protegido - ADMIN)
+DELETE {{baseUrl}}/api/usuarios/3
+Authorization: {{adminAuth}}
 Accept: {{contentType}}
 
 ###
-
-### 29. Deletar unidade de saúde - Erro: ID não encontrado (404)
-DELETE {{baseUrl}}/api/unidades-saude/999
-Accept: {{contentType}}
 
 ###############################################################################
-# ESTOQUE
+# MEDICAMENTOS (PROTEGIDO)
 ###############################################################################
 
-### 30. Consultar todo o estoque (com paginação)
-GET {{baseUrl}}/api/estoque
+### 11. Listar todos os medicamentos (Protegido)
+GET {{baseUrl}}/api/medicamentos
+Authorization: {{adminAuth}}
 Accept: {{contentType}}
 
 ###
 
-### 31. Consultar estoque por medicamento ID - Sucesso
-GET {{baseUrl}}/api/estoque/medicamento/1
-Accept: {{contentType}}
-
-###
-
-### 32. Consultar estoque por medicamento ID - Não encontrado (404)
-GET {{baseUrl}}/api/estoque/medicamento/999
-Accept: {{contentType}}
-
-###
-
-### 33. Adicionar estoque - Sucesso
-POST {{baseUrl}}/api/estoque/adicionar
-Content-Type: {{contentType}}
-
-{
-  "medicamentoId": 1,
-  "unidadeSaudeId": 1,
-  "quantidade": 50
-}
-
-###
-
-### 34. Adicionar estoque - Erro: Quantidade inválida (400)
-POST {{baseUrl}}/api/estoque/adicionar
-Content-Type: {{contentType}}
-
-{
-  "medicamentoId": 1,
-  "unidadeSaudeId": 1,
-  "quantidade": -10
-}
-
-###
-
-### 35. Adicionar estoque - Erro: Medicamento não encontrado (404)
-POST {{baseUrl}}/api/estoque/adicionar
-Content-Type: {{contentType}}
-
-{
-  "medicamentoId": 999,
-  "unidadeSaudeId": 1,
-  "quantidade": 50
-}
-
-###
-
-### 36. Remover estoque - Sucesso
-POST {{baseUrl}}/api/estoque/remover
-Content-Type: {{contentType}}
-
-{
-  "medicamentoId": 1,
-  "unidadeSaudeId": 1,
-  "quantidade": 20
-}
-
-###
-
-### 37. Remover estoque - Erro: Quantidade maior que disponível (400)
-POST {{baseUrl}}/api/estoque/remover
-Content-Type: {{contentType}}
-
-{
-  "medicamentoId": 1,
-  "unidadeSaudeId": 1,
-  "quantidade": 1000
-}
-
-###
-
-### 38. Listar estoque com paginação e ordenação
-GET {{baseUrl}}/api/estoque?page=0&size=10&sort=quantidade&direction=DESC
-Accept: {{contentType}}
-
-###############################################################################
-# TESTES ADICIONAIS DE VALIDAÇÃO
-###############################################################################
-
-### 39. Teste de conectividade - Health Check
-GET {{baseUrl}}/actuator/health
-Accept: {{contentType}}
-
-###
-
-### 40. Teste de documentação - Swagger UI
-GET {{baseUrl}}/swagger-ui/index.html
-Accept: text/html
-
-###############################################################################
-# CENÁRIOS DE TESTE INTEGRADO
-###############################################################################
-
-### CENÁRIO 1: Fluxo completo de medicamento
-# 1. Cadastrar medicamento
+### 12. Cadastrar medicamento - SUCESSO (Protegido - ADMIN)
 POST {{baseUrl}}/api/medicamentos
+Authorization: {{adminAuth}}
 Content-Type: {{contentType}}
 
 {
-  "nome": "Dipirona Teste",
-  "principioAtivo": "Dipirona Sódica",
-  "fabricante": "Neo Química",
-  "dosagem": "500mg"
+  "nome": "Ibuprofeno 600mg",
+  "dosagem": "600mg",
+  "fabricante": "Medley",
+  "principioAtivo": "Ibuprofeno"
 }
 
-### 
-# 2. Buscar o medicamento criado
-GET {{baseUrl}}/api/medicamentos/2
+###
+
+### 13. Cadastrar medicamento - ERRO: Sem permissão (403 Forbidden - USUARIO)
+POST {{baseUrl}}/api/medicamentos
+Authorization: {{userAuth}}
+Content-Type: {{contentType}}
+
+{
+  "nome": "Aspirina (sem permissão)",
+  "dosagem": "500mg",
+  "fabricante": "Bayer",
+  "principioAtivo": "Ácido acetilsalicílico"
+}
+
+###
+
+###############################################################################
+# UNIDADES DE SAÚDE (PROTEGIDO)
+###############################################################################
+
+### 14. Listar todas as unidades de saúde (Protegido)
+GET {{baseUrl}}/api/unidades-saude
+Authorization: {{adminAuth}}
 Accept: {{contentType}}
 
 ###
-# 3. Atualizar o medicamento
-PUT {{baseUrl}}/api/medicamentos/2
+
+### 15. Cadastrar unidade de saúde - SUCESSO (Protegido - ADMIN)
+POST {{baseUrl}}/api/unidades-saude
+Authorization: {{adminAuth}}
 Content-Type: {{contentType}}
 
 {
-  "nome": "Dipirona Teste Atualizada",
-  "principioAtivo": "Dipirona Sódica",
-  "fabricante": "EMS",
-  "dosagem": "1000mg"
+  "nome": "UBS Central",
+  "endereco": "Rua Principal, 100",
+  "ativa": true
 }
 
-###############################################################################
-# VARIÁVEIS PARA TESTES
-# Descomente as linhas abaixo para usar ambiente de produção
-###############################################################################
-
-# @baseUrl = https://api.medicamentos.com
-# @contentType = application/json
+###
 
 ###############################################################################
-# NOTAS:
-# - Use Ctrl+Alt+R (ou Cmd+Alt+R no Mac) para executar requisições
-# - Separe requisições com ### 
-# - Use {{variavel}} para interpolação de variáveis
-# - Pressione F1 > "Rest Client: Send Request" para executar
+# ESTOQUE (PROTEGIDO)
 ###############################################################################
+
+### 16. Adicionar estoque - SUCESSO (Protegido - ADMIN)
+POST {{baseUrl}}/api/estoque/adicionar
+Authorization: {{adminAuth}}
+Content-Type: {{contentType}}
+
+{
+  "medicamentoId": 1,
+  "unidadeSaudeId": 1,
+  "quantidade": 100,
+  "quantidadeMinima": 20
+}
+
+###
+
+### 17. Remover estoque - SUCESSO (Protegido - ADMIN)
+POST {{baseUrl}}/api/estoque/remover
+Authorization: {{adminAuth}}
+Content-Type: {{contentType}}
+
+{
+  "medicamentoId": 1,
+  "unidadeSaudeId": 1,
+  "quantidade": 10
+}
+
+###
+
+### 18. Consultar todo o estoque (Protegido)
+GET {{baseUrl}}/api/estoque
+Authorization: {{adminAuth}}
+Accept: {{contentType}}
+
+###
