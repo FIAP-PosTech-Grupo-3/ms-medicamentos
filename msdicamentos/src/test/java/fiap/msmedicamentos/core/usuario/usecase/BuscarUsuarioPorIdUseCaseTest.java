@@ -28,7 +28,7 @@ class BuscarUsuarioPorIdUseCaseTest {
     void deveRetornarUsuarioQuandoEncontrado() {
         // Arrange
         Long usuarioId = 1L;
-        Usuario usuario = new Usuario(1L, "João Silva", "joao@email.com", "senha123", PapelUsuario.USUARIO, true);
+        Usuario usuario = new Usuario(1L, "João Silva", "joao@email.com", "senha123", PapelUsuario.USUARIO, true, java.time.LocalDateTime.now());
         
         when(usuarioGateway.buscarPorId(usuarioId)).thenReturn(Optional.of(usuario));
 
@@ -112,7 +112,7 @@ class BuscarUsuarioPorIdUseCaseTest {
     void deveRetornarUsuarioAtivoOuInativo() {
         // Arrange - Usuário inativo
         Long usuarioId = 2L;
-        Usuario usuarioInativo = new Usuario(2L, "Maria Santos", "maria@email.com", "senha456", PapelUsuario.ADMIN, false);
+        Usuario usuarioInativo = new Usuario(2L, "Maria Santos", "maria@email.com", "senha456", PapelUsuario.ADMIN, false, java.time.LocalDateTime.now());
         
         when(usuarioGateway.buscarPorId(usuarioId)).thenReturn(Optional.of(usuarioInativo));
 

@@ -39,7 +39,8 @@ class CadastrarUsuarioUseCaseTest {
             "teste@teste.com",
             "senha123",
             PapelUsuario.ADMIN,
-            true
+            true,
+            null
         );
     }
 
@@ -52,7 +53,8 @@ class CadastrarUsuarioUseCaseTest {
             "teste@teste.com",
             "senhaEncriptada",
             PapelUsuario.ADMIN,
-            true
+            true,
+            java.time.LocalDateTime.now()
         );
 
         when(usuarioGateway.existePorEmail("teste@teste.com")).thenReturn(false);
@@ -80,7 +82,8 @@ class CadastrarUsuarioUseCaseTest {
             "",  // email vazio
             "senha123",
             PapelUsuario.ADMIN,
-            true
+            true,
+            null
         );
 
         // Act & Assert

@@ -15,7 +15,8 @@ class UsuarioTest {
             "joao@email.com",
             "senha123",
             PapelUsuario.USUARIO,
-            true
+            true,
+            java.time.LocalDateTime.now()
         );
 
         // Act & Assert
@@ -31,7 +32,8 @@ class UsuarioTest {
             "joao@email.com",
             "senha123",
             PapelUsuario.USUARIO,
-            true
+            true,
+            java.time.LocalDateTime.now()
         );
 
         // Act & Assert
@@ -47,7 +49,8 @@ class UsuarioTest {
             "joao@email.com",
             "senha123",
             PapelUsuario.USUARIO,
-            true
+            true,
+            java.time.LocalDateTime.now()
         );
 
         // Act & Assert
@@ -63,7 +66,8 @@ class UsuarioTest {
             "joaoemail.com",
             "senha123",
             PapelUsuario.USUARIO,
-            true
+            true,
+            java.time.LocalDateTime.now()
         );
 
         // Act & Assert
@@ -79,7 +83,8 @@ class UsuarioTest {
             "joao@emailcom",
             "senha123",
             PapelUsuario.USUARIO,
-            true
+            true,
+            java.time.LocalDateTime.now()
         );
 
         // Act & Assert
@@ -95,7 +100,8 @@ class UsuarioTest {
             "",
             "senha123",
             PapelUsuario.USUARIO,
-            true
+            true,
+            java.time.LocalDateTime.now()
         );
 
         // Act & Assert
@@ -111,7 +117,8 @@ class UsuarioTest {
             "joao@email.com",
             "senha123",
             null,
-            true
+            true,
+            java.time.LocalDateTime.now()
         );
 
         // Act & Assert
@@ -127,7 +134,8 @@ class UsuarioTest {
             "admin@email.com",
             "senha123",
             PapelUsuario.ADMIN,
-            true
+            true,
+            java.time.LocalDateTime.now()
         );
 
         // Act & Assert
@@ -146,7 +154,8 @@ class UsuarioTest {
             "joao@email.com",
             "senha123",
             PapelUsuario.USUARIO,
-            true
+            true,
+            java.time.LocalDateTime.now()
         );
 
         // Act & Assert
@@ -165,7 +174,8 @@ class UsuarioTest {
             "joao@email.com",
             "senha123",
             PapelUsuario.USUARIO,
-            false
+            false,
+            java.time.LocalDateTime.now()
         );
 
         // Act
@@ -184,7 +194,8 @@ class UsuarioTest {
             "joao@email.com",
             "senha123",
             PapelUsuario.USUARIO,
-            true
+            true,
+            java.time.LocalDateTime.now()
         );
 
         // Act

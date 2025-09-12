@@ -30,8 +30,8 @@ class BuscarTodosUsuariosUseCaseTest {
     void deveRetornarListaDeUsuarios() {
         // Arrange
         List<Usuario> usuarios = java.util.Arrays.asList(
-            new Usuario(1L, "João", "joao@teste.com", "senha", PapelUsuario.ADMIN, true),
-            new Usuario(2L, "Maria", "maria@teste.com", "senha", PapelUsuario.ADMIN, true)
+            new Usuario(1L, "João", "joao@teste.com", "senha", PapelUsuario.ADMIN, true, java.time.LocalDateTime.now()),
+            new Usuario(2L, "Maria", "maria@teste.com", "senha", PapelUsuario.ADMIN, true, java.time.LocalDateTime.now())
         );
         Page<Usuario> pagina = new PageImpl<>(usuarios);
         PageRequest pageRequest = PageRequest.of(0, 10);
