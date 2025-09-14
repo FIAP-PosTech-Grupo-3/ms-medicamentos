@@ -8,8 +8,7 @@ Este projeto é uma API REST para gerenciamento de medicamentos, desenvolvida co
 
 ```bash
 # Clone o repositório
-git clone <repo-url>
-cd ms-medicamentos/msdicamentos
+git clone https://github.com/FIAP-PosTech-Grupo-3/ms-medicamentos.git
 
 # Execute com Docker Compose
 docker-compose up --build
