@@ -56,14 +56,6 @@ A API utiliza **Basic Authentication**. Usuários são criados automaticamente n
 
 Você pode testar a API usando o **REST Client** do VS Code (arquivo `requests.http`) ou importando no **Postman**.
 
-### Variáveis globais
-
-```http
-@baseUrl = http://localhost:8080
-@contentType = application/json
-@adminAuth = Basic admin admin
-@userAuth = Basic user user
-```
 
 ---
 
@@ -71,8 +63,8 @@ Você pode testar a API usando o **REST Client** do VS Code (arquivo `requests.h
 
 #### 1. Criar usuário comum
 ```http
-POST {{baseUrl}}/api/usuarios
-Content-Type: {{contentType}}
+POST /api/usuarios
+Auth: Basic Auth com login e senha
 
 {
   "nome": "Novo Usuário Teste",
@@ -84,8 +76,8 @@ Content-Type: {{contentType}}
 
 #### 2. Criar usuário ADMIN
 ```http
-POST {{baseUrl}}/api/usuarios
-Content-Type: {{contentType}}
+POST /api/usuarios
+Auth: Basic Auth com login e senha
 
 {
   "nome": "Novo Admin Teste",
@@ -97,8 +89,8 @@ Content-Type: {{contentType}}
 
 #### 3. Criar usuário com papel inválido
 ```http
-POST {{baseUrl}}/api/usuarios
-Content-Type: {{contentType}}
+POST /api/usuarios
+Auth: Basic Auth com login e senha
 
 {
   "nome": "Usuário com Erro",
@@ -110,36 +102,33 @@ Content-Type: {{contentType}}
 
 #### 4. Listar usuários (ADMIN)
 ```http
-GET {{baseUrl}}/api/usuarios
-Authorization: {{adminAuth}}
-Accept: {{contentType}}
+GET /api/usuarios
+Auth: Basic Auth com login e senha
+
 ```
 
 #### 5. Listar usuários (USUARIO)
 ```http
-GET {{baseUrl}}/api/usuarios
-Authorization: {{userAuth}}
-Accept: {{contentType}}
+GET /api/usuarios
+Auth: Basic Auth com login e senha
 ```
 
 #### 6. Listar usuários sem autenticação
 ```http
-GET {{baseUrl}}/api/usuarios
-Accept: {{contentType}}
+GET /api/usuarios
+Auth: Basic Auth com login e senha
 ```
 
 #### 7. Buscar usuário por ID
 ```http
-GET {{baseUrl}}/api/usuarios/1
-Authorization: {{adminAuth}}
-Accept: {{contentType}}
+GET /api/usuarios/{id}
+Auth: Basic Auth com login e senha
 ```
 
 #### 8. Atualizar usuário (ADMIN)
 ```http
-PUT {{baseUrl}}/api/usuarios/1
-Authorization: {{adminAuth}}
-Content-Type: {{contentType}}
+PUT /api/usuarios/{id}
+Auth: Basic Auth com login e senha
 
 {
   "nome": "Administrador Atualizado",
@@ -151,9 +140,9 @@ Content-Type: {{contentType}}
 
 #### 9. Atualizar usuário sem permissão (USUARIO)
 ```http
-PUT {{baseUrl}}/api/usuarios/2
-Authorization: {{userAuth}}
-Content-Type: {{contentType}}
+PUT /api/usuarios/{id}
+Auth: Basic Auth com login e senha
+
 
 {
   "nome": "Usuário Comum Tentando Atualizar",
@@ -165,9 +154,9 @@ Content-Type: {{contentType}}
 
 #### 10. Deletar usuário (ADMIN)
 ```http
-DELETE {{baseUrl}}/api/usuarios/3
-Authorization: {{adminAuth}}
-Accept: {{contentType}}
+DELETE {{baseUrl}}/api/usuarios/{id}
+Auth: Basic Auth com login e senha
+
 ```
 
 ---
@@ -176,15 +165,14 @@ Accept: {{contentType}}
 
 #### 11. Listar medicamentos (Público)
 ```http
-GET {{baseUrl}}/api/medicamentos
-Accept: {{contentType}}
+GET /api/medicamentos
+Auth: Basic Auth com login e senha
 ```
 
 #### 12. Criar medicamento (ADMIN)
 ```http
-POST {{baseUrl}}/api/medicamentos
-Authorization: {{adminAuth}}
-Content-Type: {{contentType}}
+POST /api/medicamentos
+Auth: Basic Auth com login e senha
 
 {
   "nome": "Ibuprofeno 600mg",
@@ -196,9 +184,7 @@ Content-Type: {{contentType}}
 
 #### 13. Criar medicamento sem permissão (USUARIO)
 ```http
-POST {{baseUrl}}/api/medicamentos
-Authorization: {{userAuth}}
-Content-Type: {{contentType}}
+POST /api/medicamentos
 
 {
   "nome": "Aspirina (sem permissão)",
@@ -214,15 +200,14 @@ Content-Type: {{contentType}}
 
 #### 14. Listar unidades de saúde
 ```http
-GET {{baseUrl}}/api/unidades-saude
-Accept: {{contentType}}
+GET /api/unidades-saude
+Auth: Basic Auth com login e senha
 ```
 
 #### 15. Criar unidade de saúde (ADMIN)
 ```http
-POST {{baseUrl}}/api/unidades-saude
-Authorization: {{adminAuth}}
-Content-Type: {{contentType}}
+POST /api/unidades-saude
+Auth: Basic Auth com login e senha
 
 {
   "nome": "UBS Central",
@@ -237,9 +222,8 @@ Content-Type: {{contentType}}
 
 #### 16. Adicionar estoque (ADMIN)
 ```http
-POST {{baseUrl}}/api/estoque/adicionar
-Authorization: {{adminAuth}}
-Content-Type: {{contentType}}
+POST /api/estoque/adicionar
+Auth: Basic Auth com login e senha
 
 {
   "medicamentoId": 1,
@@ -251,9 +235,8 @@ Content-Type: {{contentType}}
 
 #### 17. Remover estoque (ADMIN)
 ```http
-POST {{baseUrl}}/api/estoque/remover
-Authorization: {{adminAuth}}
-Content-Type: {{contentType}}
+POST /api/estoque/remover
+Auth: Basic Auth com login e senha
 
 {
   "medicamentoId": 1,
@@ -264,20 +247,20 @@ Content-Type: {{contentType}}
 
 #### 18. Consultar estoque
 ```http
-GET {{baseUrl}}/api/estoque
-Accept: {{contentType}}
+GET /api/estoque
+Auth: Basic Auth com login e senha
 ```
 
 #### 19. Buscar estoque por medicamento e unidade
 ```http
-GET {{baseUrl}}/api/estoque/medicamento/1/unidade/1
-Accept: {{contentType}}
+GET /api/estoque/medicamento/1/unidade/1
+Auth: Basic Auth com login e senha
 ```
 
 #### 20. Buscar estoque não existente
 ```http
-GET {{baseUrl}}/api/estoque/medicamento/999/unidade/999
-Accept: {{contentType}}
+GET /api/estoque/medicamento/999/unidade/{id}
+Auth: Basic Auth com login e senha
 ```
 
 ---
