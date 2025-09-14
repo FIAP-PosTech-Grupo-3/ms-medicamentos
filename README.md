@@ -154,7 +154,7 @@ Auth: Basic Auth com login e senha
 
 #### 10. Deletar usuário (ADMIN)
 ```http
-DELETE {{baseUrl}}/api/usuarios/{id}
+DELETE /api/usuarios/{id}
 Auth: Basic Auth com login e senha
 
 ```
