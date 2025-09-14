@@ -20,7 +20,8 @@ class EstoqueMedicamentoBusinessRulesTest {
             1L,
             1L,
             5,   // quantidade atual
-            10   // estoque mínimo
+            10,   // estoque mínimo
+            null
         );
 
         EstoqueMedicamento estoqueAcimaMinimo = new EstoqueMedicamento(
@@ -28,7 +29,8 @@ class EstoqueMedicamentoBusinessRulesTest {
             1L,
             1L,
             20,  // quantidade atual
-            10   // estoque mínimo
+            10,   // estoque mínimo
+            null
         );
 
         EstoqueMedicamento estoqueExatoMinimo = new EstoqueMedicamento(
@@ -36,7 +38,8 @@ class EstoqueMedicamentoBusinessRulesTest {
             1L,
             1L,
             10,  // quantidade atual
-            10   // estoque mínimo
+            10,   // estoque mínimo
+            null
         );
 
         // Assert: Testa regra de negócio real da entidade
@@ -54,7 +57,8 @@ class EstoqueMedicamentoBusinessRulesTest {
             1L,
             1L,
             50,
-            10
+            10,
+            null
         );
 
         // Act & Assert: Testa lógica real de adição
@@ -79,7 +83,8 @@ class EstoqueMedicamentoBusinessRulesTest {
             1L,
             1L,
             50,
-            10
+            10,
+            null
         );
         
         int quantidadeOriginal = estoque.getQuantidade();
@@ -107,8 +112,9 @@ class EstoqueMedicamentoBusinessRulesTest {
             1L,
             1L,
             1L,
-            100,
-            20
+            50,
+            10,
+            null
         );
 
         // Act & Assert: Testa definição de quantidade válida
@@ -127,6 +133,25 @@ class EstoqueMedicamentoBusinessRulesTest {
     }
 
     @Test
+    @DisplayName("Deve manter quantidade se nova quantidade for invalida")
+    void deveManterQuantidadeSeNovaQuantidadeForInvalida() {
+        // Arrange
+        EstoqueMedicamento estoque = new EstoqueMedicamento(
+            1L,
+            1L,
+            1L,
+            50,
+            10,
+            null
+        );
+        int quantidadeOriginal = estoque.getQuantidade();
+
+        // Act & Assert: Tenta definir quantidade negativa
+        estoque.definirQuantidade(-10);
+        assertEquals(quantidadeOriginal, estoque.getQuantidade()); // Deve manter a quantidade original
+    }
+
+    @Test
     @DisplayName("Deve validar estado de criação da entidade")
     void deveValidarEstadoCriacaoEntidade() {
         // Act & Assert: Testa criação com valores válidos
@@ -135,7 +160,8 @@ class EstoqueMedicamentoBusinessRulesTest {
             1L,
             1L,
             50,
-            10
+            10,
+            null
         );
         assertTrue(estoqueValido.isValido());
 
@@ -145,7 +171,8 @@ class EstoqueMedicamentoBusinessRulesTest {
             null,  // medicamentoId nulo
             1L,
             50,
-            10
+            10,
+            null
         );
         assertFalse(estoqueInvalido1.isValido());
 
@@ -155,7 +182,8 @@ class EstoqueMedicamentoBusinessRulesTest {
             1L,
             null,  // unidadeSaudeId nulo
             50,
-            10
+            10,
+            null
         );
         assertFalse(estoqueInvalido2.isValido());
 
@@ -165,8 +193,49 @@ class EstoqueMedicamentoBusinessRulesTest {
             1L,
             1L,
             -10,  // quantidade negativa
-            10
+            10,
+            null
         );
         assertFalse(estoqueInvalido3.isValido());
+    }
+
+    @Test
+    @DisplayName("Deve ser invalido com dados nulos")
+    void deveSerInvalidoComDadosNulos() {
+        // Arrange
+        EstoqueMedicamento estoqueMedicamentoNulo = new EstoqueMedicamento(
+            1L,
+            null,
+            1L,
+            100,
+            10,
+            null
+        );
+        EstoqueMedicamento estoqueUnidadeNula = new EstoqueMedicamento(
+            1L,
+            1L,
+            null,
+            100,
+            10,
+            null
+        );
+        EstoqueMedicamento estoqueQuantidadeNula = new EstoqueMedicamento(
+            1L,
+            1L,
+            1L,
+            100,
+            10,
+            null
+        );
+        estoqueQuantidadeNula.setQuantidade(null);
+
+        // Act & Assert: Testa entidade com medicamentoId nulo
+        assertFalse(estoqueMedicamentoNulo.isValido());
+
+        // Act & Assert: Testa entidade com unidadeSaudeId nulo
+        assertFalse(estoqueUnidadeNula.isValido());
+
+        // Act & Assert: Testa entidade com quantidade nula
+        assertFalse(estoqueQuantidadeNula.isValido());
     }
 }

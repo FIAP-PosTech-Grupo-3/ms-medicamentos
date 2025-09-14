@@ -206,3 +206,15 @@ GET {{baseUrl}}/api/estoque
 Accept: {{contentType}}
 
 ###
+
+### 19. Buscar estoque por medicamento e unidade - SUCESSO (Público)
+GET {{baseUrl}}/api/estoque/medicamento/1/unidade/1
+Accept: {{contentType}}
+
+###
+
+### 20. Buscar estoque por medicamento e unidade - ERRO: Não encontrado (404)
+GET {{baseUrl}}/api/estoque/medicamento/999/unidade/999
+Accept: {{contentType}}
+
+###

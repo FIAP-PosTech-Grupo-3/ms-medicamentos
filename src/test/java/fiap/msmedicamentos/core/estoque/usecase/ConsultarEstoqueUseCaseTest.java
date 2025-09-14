@@ -27,7 +27,7 @@ class ConsultarEstoqueUseCaseTest {
     void deveBuscarEstoquePorMedicamento() {
         // Arrange
         Long medicamentoId = 1L;
-        EstoqueMedicamento estoque = new EstoqueMedicamento(1L, medicamentoId, 1L, 50, 10);
+        EstoqueMedicamento estoque = new EstoqueMedicamento(1L, medicamentoId, 1L, 50, 10, null);
         
         when(estoqueGateway.buscarPorMedicamento(medicamentoId))
             .thenReturn(java.util.Arrays.asList(estoque));
@@ -62,8 +62,8 @@ class ConsultarEstoqueUseCaseTest {
     @Test
     void deveListarTodosEstoquesPaginados() {
         // Arrange
-        EstoqueMedicamento estoque1 = new EstoqueMedicamento(1L, 1L, 1L, 50, 10);
-        EstoqueMedicamento estoque2 = new EstoqueMedicamento(2L, 2L, 1L, 30, 5);
+        EstoqueMedicamento estoque1 = new EstoqueMedicamento(1L, 1L, 1L, 50, 10, null);
+        EstoqueMedicamento estoque2 = new EstoqueMedicamento(2L, 2L, 1L, 30, 5, null);
         Page<EstoqueMedicamento> pagina = new PageImpl<>(java.util.Arrays.asList(estoque1, estoque2));
         PageRequest pageRequest = PageRequest.of(0, 10);
         

@@ -17,6 +17,7 @@ public class EstoqueMedicamentoMapper {
         entity.setUnidadeSaudeId(domain.getUnidadeSaudeId());
         entity.setQuantidade(domain.getQuantidade());
         entity.setQuantidadeMinima(domain.getQuantidadeMinima());
+        // O campo dataDeCriacao é gerenciado pelo @CreationTimestamp
         
         return entity;
     }
@@ -32,6 +33,7 @@ public class EstoqueMedicamentoMapper {
         domain.setUnidadeSaudeId(entity.getUnidadeSaudeId());
         domain.setQuantidade(entity.getQuantidade());
         domain.setQuantidadeMinima(entity.getQuantidadeMinima());
+        domain.setUltimaAtualizacao(entity.getUltimaAtualizacao());
         
         return domain;
     }

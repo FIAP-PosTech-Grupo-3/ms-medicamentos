@@ -13,7 +13,8 @@ class EstoqueMedicamentoTest {
             1L,  // medicamentoId
             1L,  // unidadeSaudeId
             100, // quantidade
-            10   // quantidadeMinima
+            10,   // quantidadeMinima
+            null
         );
 
         // Act & Assert
@@ -28,7 +29,8 @@ class EstoqueMedicamentoTest {
             null,
             1L,
             100,
-            10
+            10,
+            null
         );
 
         // Act & Assert
@@ -43,7 +45,8 @@ class EstoqueMedicamentoTest {
             1L,
             null,
             100,
-            10
+            10,
+            null
         );
 
         // Act & Assert
@@ -58,7 +61,8 @@ class EstoqueMedicamentoTest {
             1L,
             1L,
             null,
-            10
+            10,
+            null
         );
 
         // Act & Assert
@@ -73,7 +77,8 @@ class EstoqueMedicamentoTest {
             1L,
             1L,
             -5,
-            10
+            10,
+            null
         );
 
         // Act & Assert
@@ -88,7 +93,8 @@ class EstoqueMedicamentoTest {
             1L,
             1L,
             50,
-            10
+            10,
+            null
         );
 
         // Act & Assert
@@ -103,7 +109,8 @@ class EstoqueMedicamentoTest {
             1L,
             1L,
             0,
-            10
+            10,
+            null
         );
 
         // Act & Assert
@@ -118,7 +125,8 @@ class EstoqueMedicamentoTest {
             1L,
             1L,
             5,  // quantidade menor que mínima
-            10  // quantidade mínima
+            10,  // quantidade mínima
+            null
         );
 
         // Act & Assert
@@ -133,7 +141,8 @@ class EstoqueMedicamentoTest {
             1L,
             1L,
             20, // quantidade maior que mínima
-            10  // quantidade mínima
+            10,  // quantidade mínima
+            null
         );
 
         // Act & Assert
@@ -144,7 +153,7 @@ class EstoqueMedicamentoTest {
     void deveAdicionarQuantidade() {
         // Arrange
         EstoqueMedicamento estoque = new EstoqueMedicamento(
-            1L, 1L, 1L, 50, 10
+            1L, 1L, 1L, 50, 10, null
         );
 
         // Act
@@ -158,7 +167,7 @@ class EstoqueMedicamentoTest {
     void deveRemoverQuantidade() {
         // Arrange
         EstoqueMedicamento estoque = new EstoqueMedicamento(
-            1L, 1L, 1L, 50, 10
+            1L, 1L, 1L, 50, 10, null
         );
 
         // Act
@@ -172,7 +181,7 @@ class EstoqueMedicamentoTest {
     void naoDevePermitirQuantidadeNegativaAoRemover() {
         // Arrange
         EstoqueMedicamento estoque = new EstoqueMedicamento(
-            1L, 1L, 1L, 10, 5
+            1L, 1L, 1L, 10, 5, null
         );
 
         // Act
@@ -186,7 +195,7 @@ class EstoqueMedicamentoTest {
     void deveDefinirNovaQuantidade() {
         // Arrange
         EstoqueMedicamento estoque = new EstoqueMedicamento(
-            1L, 1L, 1L, 50, 10
+            1L, 1L, 1L, 50, 10, null
         );
 
         // Act
@@ -200,7 +209,7 @@ class EstoqueMedicamentoTest {
     void naoDeveAdicionarQuantidadeNegativa() {
         // Arrange
         EstoqueMedicamento estoque = new EstoqueMedicamento(
-            1L, 1L, 1L, 50, 10
+            1L, 1L, 1L, 50, 10, null
         );
         int quantidadeInicial = estoque.getQuantidade();
 
@@ -215,12 +224,27 @@ class EstoqueMedicamentoTest {
     void naoDeveRemoverQuantidadeNegativa() {
         // Arrange
         EstoqueMedicamento estoque = new EstoqueMedicamento(
-            1L, 1L, 1L, 50, 10
+            1L, 1L, 1L, 50, 10, null
         );
         int quantidadeInicial = estoque.getQuantidade();
 
         // Act
         estoque.removerQuantidade(-10);
+
+        // Assert
+        assertEquals(quantidadeInicial, estoque.getQuantidade()); // Não deve ter mudado
+    }
+
+    @Test
+    void naoDeveDefinirQuantidadeNegativa() {
+        // Arrange
+        EstoqueMedicamento estoque = new EstoqueMedicamento(
+            1L, 1L, 1L, 50, 10, null
+        );
+        int quantidadeInicial = estoque.getQuantidade();
+
+        // Act
+        estoque.definirQuantidade(-10);
 
         // Assert
         assertEquals(quantidadeInicial, estoque.getQuantidade()); // Não deve ter mudado

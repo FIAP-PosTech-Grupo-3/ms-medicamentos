@@ -91,7 +91,7 @@ public class EstoqueController {
         @ApiResponse(responseCode = "400", description = "Dados inválidos fornecidos"),
         @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     })
-    public ResponseEntity<EstoqueResponse> atualizarEstoque(@Valid @RequestBody AtualizarEstoqueRequest request) {
+    public ResponseEntity<EstoqueResponse> atualizarEstoque(@RequestBody @Valid AtualizarEstoqueRequest request) {
         log.info("Atualizando estoque do medicamento {} na unidade {} para {}", 
                 request.getMedicamentoId(), request.getUnidadeSaudeId(), request.getQuantidade());
         
@@ -150,6 +150,25 @@ public class EstoqueController {
         List<EstoqueResponse> response = estoques.stream()
                 .map(mapper::toResponse)
                 .collect(Collectors.toList());
+        
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/medicamento/{medicamentoId}/unidade/{unidadeSaudeId}")
+    @Operation(summary = "Consultar estoque por medicamento e unidade", description = "Busca o estoque específico de um medicamento em uma unidade")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Estoque encontrado com sucesso"),
+        @ApiResponse(responseCode = "404", description = "Estoque não encontrado"),
+        @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+    })
+    public ResponseEntity<EstoqueResponse> buscarEstoquePorMedicamentoEUnidade(
+            @Parameter(description = "ID do medicamento") @PathVariable Long medicamentoId,
+            @Parameter(description = "ID da unidade de saúde") @PathVariable Long unidadeSaudeId) {
+        
+        log.info("Buscando estoque para medicamento ID: {} na unidade ID: {}", medicamentoId, unidadeSaudeId);
+        
+        EstoqueMedicamento estoque = consultarEstoqueUseCase.buscarPorMedicamentoEUnidade(medicamentoId, unidadeSaudeId);
+        EstoqueResponse response = mapper.toResponse(estoque);
         
         return ResponseEntity.ok(response);
     }

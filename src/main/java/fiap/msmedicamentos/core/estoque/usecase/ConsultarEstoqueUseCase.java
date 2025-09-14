@@ -36,4 +36,10 @@ public class ConsultarEstoqueUseCase {
         log.info("Buscando medicamentos com estoque baixo");
         return estoqueGateway.buscarComEstoqueBaixo();
     }
+
+    public EstoqueMedicamento buscarPorMedicamentoEUnidade(Long medicamentoId, Long unidadeSaudeId) {
+        log.info("Buscando estoque para medicamento ID: {} e unidade de saúde ID: {}", medicamentoId, unidadeSaudeId);
+        return estoqueGateway.buscarPorMedicamentoEUnidade(medicamentoId, unidadeSaudeId)
+                .orElseThrow(() -> new fiap.msmedicamentos.core.estoque.exception.EstoqueNaoEncontradoException("Estoque não encontrado"));
+    }
 }

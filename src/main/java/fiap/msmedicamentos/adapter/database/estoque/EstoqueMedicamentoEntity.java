@@ -4,6 +4,10 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "medicamento_unidade_saude")
@@ -28,9 +32,11 @@ public class EstoqueMedicamentoEntity {
     @Column(name = "quantidade_minima")
     private Integer quantidadeMinima;
     
-    @Column(name = "created_at")
-    private java.time.LocalDateTime createdAt;
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false)
+    private LocalDateTime dataDeCriacao;
     
+    @UpdateTimestamp
     @Column(name = "updated_at")
-    private java.time.LocalDateTime updatedAt;
+    private LocalDateTime ultimaAtualizacao;
 }

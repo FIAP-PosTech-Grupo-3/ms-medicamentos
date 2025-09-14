@@ -38,7 +38,8 @@ class RemoverEstoqueUseCaseTest {
             1L,
             1L,
             100,
-            10
+            10,
+            null // ultimaAtualizacao
         );
     }
 
@@ -70,7 +71,8 @@ class RemoverEstoqueUseCaseTest {
             1L,
             1L,
             10,
-            5
+            5,
+            null // ultimaAtualizacao
         );
         
         when(estoqueGateway.buscarPorMedicamentoEUnidade(1L, 1L))
@@ -105,30 +107,13 @@ class RemoverEstoqueUseCaseTest {
     }
 
     @Test
-    void deveValidarRegraDeNegocioDeEstoqueMinimoAposRemocao() {
-        // Arrange: Teste da lógica de negócio sem mock excessivo
-        EstoqueMedicamento estoque = new EstoqueMedicamento(
-            1L,
-            1L,
-            1L,
-            20,
-            10  // estoque mínimo = 10
-        );
-        
-        when(estoqueGateway.buscarPorMedicamentoEUnidade(1L, 1L))
-            .thenReturn(Optional.of(estoque));
-        when(estoqueGateway.salvar(any(EstoqueMedicamento.class)))
-            .thenReturn(estoque);
+    void deveLancarExcecaoQuandoTentaRemoverDeEstoqueInexistente() {
+        // Arrange
+        when(estoqueGateway.buscarPorMedicamentoEUnidade(1L, 1L)).thenReturn(Optional.empty());
 
-        // Act: Removendo 15 unidades (restará 5, abaixo do mínimo de 10)
-        EstoqueMedicamento resultado = removerEstoqueUseCase.execute(1L, 1L, 15);
-
-        // Assert: Verifica se a lógica de negócio é aplicada corretamente
-        assertNotNull(resultado);
-        assertEquals(5, resultado.getQuantidade());
-        assertTrue(resultado.precisaReposicao()); // Método real da entidade
-        
-        // Verifica que o estoque foi salvo mesmo abaixo do mínimo (regra de negócio)
-        verify(estoqueGateway).salvar(estoque);
+        // Act & Assert
+        assertThrows(EstoqueNaoEncontradoException.class, () -> {
+            removerEstoqueUseCase.execute(1L, 1L, 10);
+        });
     }
 }

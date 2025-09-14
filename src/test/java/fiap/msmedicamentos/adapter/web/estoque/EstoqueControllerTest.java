@@ -61,7 +61,7 @@ class EstoqueControllerTest {
         request.setUnidadeSaudeId(1L);
         request.setQuantidade(50);
 
-        EstoqueMedicamento estoque = new EstoqueMedicamento(1L, 1L, 1L, 100, 10);
+        EstoqueMedicamento estoque = new EstoqueMedicamento(1L, 1L, 1L, 100, 10, null);
         EstoqueResponse response = new EstoqueResponse();
         response.setId(1L);
         response.setMedicamentoId(1L);
@@ -92,7 +92,7 @@ class EstoqueControllerTest {
         request.setUnidadeSaudeId(1L);
         request.setQuantidade(20);
 
-        EstoqueMedicamento estoque = new EstoqueMedicamento(1L, 1L, 1L, 30, 10);
+        EstoqueMedicamento estoque = new EstoqueMedicamento(1L, 1L, 1L, 30, 10, null);
         EstoqueResponse response = new EstoqueResponse();
         response.setId(1L);
         response.setMedicamentoId(1L);
@@ -113,44 +113,107 @@ class EstoqueControllerTest {
     }
 
     @Test
-    void deveConsultarEstoquePorMedicamento() throws Exception {
+    void deveListarTodosEstoques() throws Exception {
         // Arrange
-        Long medicamentoId = 1L;
-        List<EstoqueMedicamento> estoques = Arrays.asList(
-            new EstoqueMedicamento(1L, 1L, 1L, 50, 10),
-            new EstoqueMedicamento(2L, 1L, 2L, 30, 5)
-        );
+        EstoqueMedicamento estoque1 = new EstoqueMedicamento(1L, 1L, 1L, 100, 10, null);
+        EstoqueMedicamento estoque2 = new EstoqueMedicamento(2L, 2L, 1L, 50, 5, null);
+        List<EstoqueMedicamento> estoques = Arrays.asList(estoque1, estoque2);
+        Page<EstoqueMedicamento> page = new PageImpl<>(estoques, PageRequest.of(0, 10), 2);
 
         EstoqueResponse response1 = new EstoqueResponse();
         response1.setId(1L);
-        response1.setQuantidade(50);
+        response1.setQuantidade(100);
 
         EstoqueResponse response2 = new EstoqueResponse();
         response2.setId(2L);
-        response2.setQuantidade(30);
+        response2.setQuantidade(50);
 
-        when(consultarEstoqueUseCase.buscarPorMedicamento(medicamentoId)).thenReturn(estoques);
-        when(mapper.toResponse(estoques.get(0))).thenReturn(response1);
-        when(mapper.toResponse(estoques.get(1))).thenReturn(response2);
+        when(consultarEstoqueUseCase.buscarTodos(any(PageRequest.class))).thenReturn(page);
+        when(mapper.toResponse(estoque1)).thenReturn(response1);
+        when(mapper.toResponse(estoque2)).thenReturn(response2);
 
         // Act & Assert
-        mockMvc.perform(get("/api/estoque/medicamento/{medicamentoId}", medicamentoId))
+        mockMvc.perform(get("/api/estoque")
+                .param("page", "0")
+                .param("size", "10"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content").isArray())
+                .andExpect(jsonPath("$.totalElements").value(2));
+
+        verify(consultarEstoqueUseCase).buscarTodos(any(PageRequest.class));
+    }
+
+    @Test
+    void deveBuscarEstoquePorMedicamento() throws Exception {
+        // Arrange
+        EstoqueMedicamento estoque1 = new EstoqueMedicamento(1L, 1L, 1L, 100, 10, null);
+        EstoqueMedicamento estoque2 = new EstoqueMedicamento(2L, 1L, 2L, 50, 5, null);
+        List<EstoqueMedicamento> estoques = Arrays.asList(estoque1, estoque2);
+
+        EstoqueResponse response1 = new EstoqueResponse();
+        response1.setId(1L);
+        response1.setQuantidade(100);
+
+        EstoqueResponse response2 = new EstoqueResponse();
+        response2.setId(2L);
+        response2.setQuantidade(50);
+
+        when(consultarEstoqueUseCase.buscarPorMedicamento(1L)).thenReturn(estoques);
+        when(mapper.toResponse(estoque1)).thenReturn(response1);
+        when(mapper.toResponse(estoque2)).thenReturn(response2);
+
+        // Act & Assert
+        mockMvc.perform(get("/api/estoque/medicamento/{medicamentoId}", 1L))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$.length()").value(2));
 
-        verify(consultarEstoqueUseCase).buscarPorMedicamento(medicamentoId);
+        verify(consultarEstoqueUseCase).buscarPorMedicamento(1L);
     }
 
     @Test
-    void deveListarTodosEstoquesComPaginacao() throws Exception {
+    void deveBuscarEstoquePorMedicamentoEUnidade() throws Exception {
         // Arrange
-        EstoqueMedicamento estoque1 = new EstoqueMedicamento(1L, 1L, 1L, 100, 20);
-        EstoqueMedicamento estoque2 = new EstoqueMedicamento(2L, 2L, 1L, 50, 10);
-        
-        Page<EstoqueMedicamento> page = new PageImpl<>(Arrays.asList(estoque1, estoque2), PageRequest.of(0, 10), 2);
+        EstoqueMedicamento estoque = new EstoqueMedicamento(1L, 1L, 1L, 100, 10, null);
+        EstoqueResponse response = new EstoqueResponse();
+        response.setId(1L);
+        response.setMedicamentoId(1L);
+        response.setUnidadeSaudeId(1L);
+        response.setQuantidade(100);
+
+        when(consultarEstoqueUseCase.buscarPorMedicamentoEUnidade(1L, 1L)).thenReturn(estoque);
+        when(mapper.toResponse(estoque)).thenReturn(response);
+
+        // Act & Assert
+        mockMvc.perform(get("/api/estoque/medicamento/{medicamentoId}/unidade/{unidadeSaudeId}", 1L, 1L))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1L))
+                .andExpect(jsonPath("$.medicamentoId").value(1L))
+                .andExpect(jsonPath("$.unidadeSaudeId").value(1L))
+                .andExpect(jsonPath("$.quantidade").value(100));
+
+        verify(consultarEstoqueUseCase).buscarPorMedicamentoEUnidade(1L, 1L);
+    }
+
+    @Test
+    void deveListarEstoquesPorPagina() throws Exception {
+        // Arrange
+        EstoqueMedicamento estoque1 = new EstoqueMedicamento(1L, 1L, 1L, 100, 10, null);
+        EstoqueMedicamento estoque2 = new EstoqueMedicamento(2L, 2L, 1L, 50, 5, null);
+        List<EstoqueMedicamento> estoques = Arrays.asList(estoque1, estoque2);
+        Page<EstoqueMedicamento> page = new PageImpl<>(estoques, PageRequest.of(0, 10), 2);
+
+        EstoqueResponse response1 = new EstoqueResponse();
+        response1.setId(1L);
+        response1.setQuantidade(100);
+
+        EstoqueResponse response2 = new EstoqueResponse();
+        response2.setId(2L);
+        response2.setQuantidade(50);
 
         when(consultarEstoqueUseCase.buscarTodos(any(PageRequest.class))).thenReturn(page);
+        when(mapper.toResponse(estoque1)).thenReturn(response1);
+        when(mapper.toResponse(estoque2)).thenReturn(response2);
 
         // Act & Assert
         mockMvc.perform(get("/api/estoque")
@@ -178,24 +241,24 @@ class EstoqueControllerTest {
     }
 
     @Test
-    void deveAtualizarEstoqueComSucesso() throws Exception {
+    void deveAtualizarEstoque() throws Exception {
         // Arrange
         AtualizarEstoqueRequest request = new AtualizarEstoqueRequest();
-        request.setMedicamentoId(1L);
-        request.setUnidadeSaudeId(1L);
-        request.setQuantidade(75);
-        request.setQuantidadeMinima(15);
+        request.setMedicamentoId(1L); // Correção: Adicionar ID do medicamento
+        request.setUnidadeSaudeId(1L); // Correção: Adicionar ID da unidade de saúde
+        request.setQuantidade(150);
+        request.setQuantidadeMinima(30);
 
-        EstoqueMedicamento estoque = new EstoqueMedicamento(1L, 1L, 1L, 75, 15);
+        EstoqueMedicamento estoqueAtualizado = new EstoqueMedicamento(1L, 1L, 1L, 150, 30, null);
         EstoqueResponse response = new EstoqueResponse();
         response.setId(1L);
         response.setMedicamentoId(1L);
         response.setUnidadeSaudeId(1L);
-        response.setQuantidade(75);
-        response.setQuantidadeMinima(15);
+        response.setQuantidade(150);
+        response.setQuantidadeMinima(30);
 
-        when(atualizarEstoqueUseCase.execute(1L, 1L, 75, 15)).thenReturn(estoque);
-        when(mapper.toResponse(estoque)).thenReturn(response);
+        when(atualizarEstoqueUseCase.execute(1L, 1L, 150, 30)).thenReturn(estoqueAtualizado);
+        when(mapper.toResponse(estoqueAtualizado)).thenReturn(response);
 
         // Act & Assert
         mockMvc.perform(put("/api/estoque/atualizar")
@@ -204,19 +267,19 @@ class EstoqueControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1L))
                 .andExpect(jsonPath("$.medicamentoId").value(1L))
-                .andExpect(jsonPath("$.quantidade").value(75))
-                .andExpect(jsonPath("$.quantidadeMinima").value(15));
+                .andExpect(jsonPath("$.quantidade").value(150))
+                .andExpect(jsonPath("$.quantidadeMinima").value(30));
 
-        verify(atualizarEstoqueUseCase).execute(1L, 1L, 75, 15);
-        verify(mapper).toResponse(estoque);
+        verify(atualizarEstoqueUseCase).execute(1L, 1L, 150, 30);
+        verify(mapper).toResponse(estoqueAtualizado);
     }
 
     @Test
     void deveConsultarEstoquePorUnidadeSaude() throws Exception {
         // Arrange
         Long unidadeSaudeId = 1L;
-        EstoqueMedicamento estoque1 = new EstoqueMedicamento(1L, 1L, unidadeSaudeId, 100, 20);
-        EstoqueMedicamento estoque2 = new EstoqueMedicamento(2L, 2L, unidadeSaudeId, 50, 10);
+        EstoqueMedicamento estoque1 = new EstoqueMedicamento(1L, 1L, unidadeSaudeId, 100, 20, null);
+        EstoqueMedicamento estoque2 = new EstoqueMedicamento(2L, 2L, unidadeSaudeId, 50, 10, null);
         
         List<EstoqueMedicamento> estoques = Arrays.asList(estoque1, estoque2);
 
@@ -234,8 +297,8 @@ class EstoqueControllerTest {
     @Test
     void deveConsultarEstoqueBaixo() throws Exception {
         // Arrange
-        EstoqueMedicamento estoque1 = new EstoqueMedicamento(1L, 1L, 1L, 5, 10); // Baixo estoque
-        EstoqueMedicamento estoque2 = new EstoqueMedicamento(2L, 2L, 1L, 3, 10); // Baixo estoque
+        EstoqueMedicamento estoque1 = new EstoqueMedicamento(1L, 1L, 1L, 5, 10, null); // Baixo estoque
+        EstoqueMedicamento estoque2 = new EstoqueMedicamento(2L, 2L, 1L, 3, 10, null); // Baixo estoque
         
         List<EstoqueMedicamento> estoquesBaixos = Arrays.asList(estoque1, estoque2);
 

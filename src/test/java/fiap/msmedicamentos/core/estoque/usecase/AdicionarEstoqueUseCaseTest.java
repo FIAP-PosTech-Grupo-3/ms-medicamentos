@@ -38,7 +38,8 @@ class AdicionarEstoqueUseCaseTest {
             1L,
             1L,
             50,
-            10
+            10,
+            null // ultimaAtualizacao
         );
     }
 
@@ -70,7 +71,8 @@ class AdicionarEstoqueUseCaseTest {
             1L,
             1L,
             30,
-            10
+            10,
+            null // ultimaAtualizacao
         );
 
         when(estoqueGateway.buscarPorMedicamentoEUnidade(1L, 1L))

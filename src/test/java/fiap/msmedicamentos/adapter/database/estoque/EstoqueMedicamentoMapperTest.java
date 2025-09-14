@@ -12,7 +12,7 @@ class EstoqueMedicamentoMapperTest {
     @Test
     void deveConverterDomainParaEntity() {
         // Arrange
-        EstoqueMedicamento domain = new EstoqueMedicamento(1L, 10L, 5L, 100, 20);
+        EstoqueMedicamento domain = new EstoqueMedicamento(1L, 10L, 5L, 100, 20, null);
 
         // Act
         EstoqueMedicamentoEntity entity = mapper.toEntity(domain);
@@ -34,6 +34,7 @@ class EstoqueMedicamentoMapperTest {
         entity.setUnidadeSaudeId(8L);
         entity.setQuantidade(50);
         entity.setQuantidadeMinima(10);
+        entity.setUltimaAtualizacao(java.time.LocalDateTime.now());
 
         // Act
         EstoqueMedicamento domain = mapper.toDomain(entity);
@@ -44,5 +45,6 @@ class EstoqueMedicamentoMapperTest {
         assertEquals(8L, domain.getUnidadeSaudeId());
         assertEquals(50, domain.getQuantidade());
         assertEquals(10, domain.getQuantidadeMinima());
+        assertNotNull(domain.getUltimaAtualizacao());
     }
 }
