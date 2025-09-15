@@ -33,6 +33,9 @@ public class AtualizarUsuarioUseCase {
         }
         
         usuarioAtualizado.setId(id);
+        // Preservar campos não enviados no update
+        usuarioAtualizado.setSenha(usuarioAtual.getSenha());
+        usuarioAtualizado.setDataCriacao(usuarioAtual.getDataCriacao());
         
         if (!usuarioAtualizado.isValido()) {
             throw new UsuarioInvalidoException("Dados do usuário são inválidos");

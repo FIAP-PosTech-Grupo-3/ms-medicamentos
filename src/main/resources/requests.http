@@ -1,11 +1,31 @@
 @baseUrl = http://localhost:8080
 @contentType = application/json
-@adminAuth = Basic admin admin
+@adminAuth = Basic admin@local x
 @userAuth = Basic user user
+@adminEmail = admin@local.com
+@adminPass = x
+@userEmail = user
+@userPass = user
 
 ###############################################################################
 # USUÁRIOS (PUBLIC & PROTECTED)
 ###############################################################################
+
+### 0. Cadastrar ADMIN padrão (execute primeiro) - PÚBLICO
+# Cria um admin ativo com email admin@local e senha x
+# Necessário para autenticar nas rotas protegidas (Basic auth usa o email)
+POST {{baseUrl}}/api/usuarios
+Content-Type: {{contentType}}
+
+{
+  "nome": "Admin",
+  "email": "{{adminEmail}}",
+  "senha": "x",
+  "papel": "ADMIN",
+  "ativo": true
+}
+
+###
 
 ### 1. Cadastrar usuário - SUCESSO (Endpoint Público)
 # @name createUser
@@ -49,14 +69,14 @@ Content-Type: {{contentType}}
 
 ### 4. Listar todos os usuários - SUCESSO (Protegido - ADMIN)
 GET {{baseUrl}}/api/usuarios
-Authorization: {{adminAuth}}
+Authorization: Basic {{$base64 {{adminEmail}}:{{adminPass}}}}
 Accept: {{contentType}}
 
 ###
 
 ### 5. Listar todos os usuários - SUCESSO (Protegido - USUARIO)
 GET {{baseUrl}}/api/usuarios
-Authorization: {{userAuth}}
+Authorization: Basic {{$base64 {{userEmail}}:{{userPass}}}}
 Accept: {{contentType}}
 
 ###
@@ -69,19 +89,19 @@ Accept: {{contentType}}
 
 ### 7. Buscar usuário por ID - SUCESSO (Protegido)
 GET {{baseUrl}}/api/usuarios/1
-Authorization: {{adminAuth}}
+Authorization: Basic {{$base64 {{adminEmail}}:{{adminPass}}}}
 Accept: {{contentType}}
 
 ###
 
 ### 8. Atualizar usuário - SUCESSO (Protegido - ADMIN)
 PUT {{baseUrl}}/api/usuarios/1
-Authorization: {{adminAuth}}
+Authorization: Basic {{$base64 {{adminEmail}}:{{adminPass}}}}
 Content-Type: {{contentType}}
 
 {
   "nome": "Administrador Atualizado",
-  "email": "admin",
+  "email": "{{adminEmail}}",
   "papel": "ADMIN",
   "ativo": true
 }
@@ -90,12 +110,12 @@ Content-Type: {{contentType}}
 
 ### 9. Atualizar usuário - ERRO: Sem permissão (403 Forbidden - USUARIO)
 PUT {{baseUrl}}/api/usuarios/2
-Authorization: {{userAuth}}
+Authorization: Basic {{$base64 {{userEmail}}:{{userPass}}}}
 Content-Type: {{contentType}}
 
 {
   "nome": "Usuário Comum Tentando Atualizar",
-  "email": "user",
+  "email": "user@local.com",
   "papel": "USUARIO",
   "ativo": false
 }
@@ -104,8 +124,51 @@ Content-Type: {{contentType}}
 
 ### 10. Deletar usuário - SUCESSO (Protegido - ADMIN)
 DELETE {{baseUrl}}/api/usuarios/3
-Authorization: {{adminAuth}}
+Authorization: Basic {{$base64 {{adminEmail}}:{{adminPass}}}}
 Accept: {{contentType}}
+
+###
+
+### 10.1 Atualizar usuário - SUCESSO (Protegido - ADMIN)
+# Atualiza o usuário de ID 1 (ajuste o ID conforme o seu ambiente)
+PUT {{baseUrl}}/api/usuarios/1
+Authorization: Basic {{$base64 {{adminEmail}}:{{adminPass}}}}
+Content-Type: {{contentType}}
+
+{
+  "nome": "Administrador Atualizado",
+  "email": "{{adminEmail}}",
+  "papel": "ADMIN",
+  "ativo": true
+}
+
+###
+
+### 10.2 Atualizar usuário - ERRO 404 (Protegido - ADMIN)
+PUT {{baseUrl}}/api/usuarios/999
+Authorization: Basic {{$base64 {{adminEmail}}:{{adminPass}}}}
+Content-Type: {{contentType}}
+
+{
+  "nome": "Xpto",
+  "email": "xpto@ex.com",
+  "papel": "ADMIN",
+  "ativo": true
+}
+
+###
+
+### 10.3 Atualizar usuário - ERRO 400 validação (Protegido - ADMIN)
+PUT {{baseUrl}}/api/usuarios/1
+Authorization: Basic {{$base64 {{adminEmail}}:{{adminPass}}}}
+Content-Type: {{contentType}}
+
+{
+  "nome": "",
+  "email": "",
+  "papel": null,
+  "ativo": null
+}
 
 ###
 
